@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Crystal Compass | Teacher Alex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d48ba8; /* Rose Quartz Darker */
+            --primary-light: #fcebf2; /* Soft Pink */
+            --accent: #dca75b; /* Gold */
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-body: #fff0f5;
+            --white: #ffffff;
+            --success: #55efc4;
+            --error: #fab1a0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for footer */
+        }
+
+        /* --- Header & Branding --- */
+        header {
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 15px rgba(212, 139, 168, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .chapter {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.8s ease;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Typography --- */
+        h1, h2 {
+            font-family: 'Lora', serif;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 { font-size: 2.5rem; text-align: center; }
+        h2 { font-size: 1.8rem; border-bottom: 2px solid var(--primary-light); padding-bottom: 0.5rem; display: inline-block; }
+        
+        .story-meta {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-family: 'Lora', serif;
+        }
+
+        .story-text {
+            font-family: 'Lora', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #2d3436;
+            margin-bottom: 3rem;
+        }
+
+        .story-text p { margin-bottom: 1.5rem; }
+
+        /* --- Sections (Vocab, Quiz) --- */
+        .section-box {
+            background: var(--primary-light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(212, 139, 168, 0.2);
+        }
+
+        .vocab-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .vocab-item {
+            background: var(--white);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .vocab-word { font-weight: 600; color: var(--primary); }
+
+        /* --- Interactive Quiz --- */
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .q-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .options label {
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .options label:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + span { font-weight: 600; }
+        
+        /* Quiz Feedback States */
+        .options label.correct {
+            border-color: var(--success);
+            background-color: #e3fdf5;
+            color: #00b894;
+        }
+        
+        .options label.wrong {
+            border-color: var(--error);
+            background-color: #ff7675; /* Red background for wrong */
+            color: white; /* White text for contrast */
+        }
+
+        /* --- Navigation Footer --- */
+        .nav-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        button.nav-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 139, 168, 0.4);
+        }
+
+        button.nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .chapter { padding: 1.5rem; }
+            h1 { font-size: 1.8rem; }
+            .story-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <span>Teacher Alex</span> The Crystal Compass
+        </div>
+        <div class="progress-container" id="chapter-indicator">
+            Cover
+        </div>
+    </header>
+
+    <main id="content-area">
+        <div class="chapter active" id="cover">
+            <div style="text-align: center; padding: 4rem 0;">
+                <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">The Crystal Compass</h1>
+                <h3 style="font-family: 'Poppins'; font-weight: 300; color: var(--text-light); margin-bottom: 3rem;">The Lost Princess of Brazil</h3>
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🧭👑🇧🇷</div>
+                <p style="font-family: 'Lora'; font-style: italic;">A Premium Graded Reader (A2)</p>
+                <p><strong>Prepared for Teacher Alex's Students</strong></p>
+                <br>
+                <p style="color: var(--primary);">By Teacher Alex</p>
+            </div>
+        </div>
+
+        <div class="chapter" id="prologue">
+            <h1>Prologue: The Stormy Night</h1>
+            <div class="story-meta">
+                <strong>Setting:</strong> The Rose Kingdom (Another Dimension) - 20 Years Ago<br>
+                <strong>Mood:</strong> Dark, Urgent, Sad
+            </div>
+            <div class="story-text">
+                <p>The sky was purple and the wind was howling. The Rose Castle was under attack.</p>
+                <p>Queen Amalia held her baby daughter tight. The baby was sleeping. She had a small birthmark on her wrist shaped like a crown.</p>
+                <p>"We cannot keep her here," the Queen cried. "The Dark Army is coming. General Vanda wants the throne."</p>
+                <p>The King looked at the magic portal. It showed a different world. A world with green forests and blue oceans. It showed a country called <em>Brazil</em>.</p>
+                <p>"I will send her to a safe place," the King said. "I will hide the three Magic Artifacts in this new world. When she is ready, the Compass will wake up. It will guide her home."</p>
+                <p>The Queen kissed the baby's forehead. "Be safe, my little Marina. You are a princess, and one day, you will return."</p>
+                <p>They put the baby in a basket and pushed it through the portal. Then, the doors of the castle burst open. General Vanda entered with a sword, but she was too late. The Princess was gone.</p>
+            </div>
+
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list">
+                    <li class="vocab-item"><span class="vocab-word">To Howl (Verb):</span> To make a long, loud, sad sound (like a wolf or the wind).</li>
+                    <li class="vocab-item"><span class="vocab-word">Tight (Adverb/Adj):</span> Held closely and firmly; not loose.</li>
+                    <li class="vocab-item"><span class="vocab-word">Throne (Noun):</span> The special chair where a King or Queen sits.</li>
+                    <li class="vocab-item"><span class="vocab-word">Safe (Adjective):</span> Not in danger.</li>
+                    <li class="vocab-item"><span class="vocab-word">Forehead (Noun):</span> The part of the face above the eyes and below the hair.</li>
+                    <li class="vocab-item"><span class="vocab-word">Basket (Noun):</span> A container made of straw or cane, used for carrying things.</li>
+                    <li class="vocab-item"><span class="vocab-word">Sword (Noun):</span> A weapon with a long metal blade.</li>
+                </ul>
+            </div>
+
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">1. Why was the Queen crying?</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-q1" value="a"> <span>a) Because she was hungry.</span></label>
+                        <label><input type="radio" name="p-q1" value="b"> <span>b) Because she had to send her baby away to be safe.</span></label>
+                        <label><input type="radio" name="p-q1" value="c"> <span>c) Because she didn't like the rain.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">2. Where did the King send the baby?</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-q2" value="a"> <span>a) To the Dark Army.</span></label>
+                        <label><input type="radio" name="p-q2" value="b"> <span>b) To the Rose Castle.</span></label>
+                        <label><input type="radio" name="p-q2" value="c"> <span>c) To Brazil.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="a">
+                    <span class="q-title">3. What did Vanda want?</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-q3" value="a"> <span>a) She wanted the throne.</span></label>
+                        <label><input type="radio" name="p-q3" value="b"> <span>b) She wanted the baby.</span></label>
+                        <label><input type="radio" name="p-q3" value="c"> <span>c) She wanted a vacation.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">Grammar: Past Continuous - The wind ______ (howl).</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-g1" value="a"> <span>a) is howling</span></label>
+                        <label><input type="radio" name="p-g1" value="b"> <span>b) were howling</span></label>
+                        <label><input type="radio" name="p-g1" value="c"> <span>c) was howling</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Possessive Adjectives - The Queen kissed ______ forehead.</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-g2" value="a"> <span>a) its</span></label>
+                        <label><input type="radio" name="p-g2" value="b"> <span>b) her</span></label>
+                        <label><input type="radio" name="p-g2" value="c"> <span>c) she</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Future (Prediction) - "One day, you ______ return."</span>
+                    <div class="options">
+                        <label><input type="radio" name="p-g3" value="a"> <span>a) are going</span></label>
+                        <label><input type="radio" name="p-g3" value="b"> <span>b) will</span></label>
+                        <label><input type="radio" name="p-g3" value="c"> <span>c) want</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch1">
+            <h1>Chapter 1: The Dusty Attic</h1>
+            <div class="story-meta">
+                <strong>Setting:</strong> The Countryside of São Paulo (The Farmhouse)<br>
+                <strong>Mood:</strong> Quiet, Mysterious, Nostalgic
+            </div>
+            <div class="story-text">
+                <p>Marina lived in a beautiful old farmhouse in the countryside of São Paulo. It was a quiet place, far from the noise of the big city. Marina loved her simple life. Her bedroom was painted soft pink, and she spent her days baking cakes and reading romance novels. However, she always felt that she was different. She had a small birthmark on her wrist shaped like a crown.</p>
+                <p>One rainy afternoon, her Aunt Vanda asked her to clean the attic. The attic was at the top of the house. It was dark, cold, and full of dust. Marina found old chairs, broken lamps, and many heavy boxes.</p>
+                <p>In the corner of the room, behind an old painting, she saw something strange. It was a small wooden chest with silver decorations. Marina opened it carefully. Inside, there was a compass. But it was not a normal compass. It was made of pink rose quartz.</p>
+                <p>Marina held the compass in her hand. Suddenly, it started to vibrate. A soft pink light filled the dark attic. The needle of the compass did not point North. It pointed somewhere far away.</p>
+                <p>"Marina!" Aunt Vanda called from downstairs. "What are you doing up there?"</p>
+                <p>Marina quickly hid the compass in her pocket. "Nothing, Auntie! I found an old toy," she lied. Her heart was beating very fast. She knew her life was about to change.</p>
+            </div>
+
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list">
+                    <li class="vocab-item"><span class="vocab-word">Farmhouse (Noun):</span> A large house on a farm.</li>
+                    <li class="vocab-item"><span class="vocab-word">Countryside (Noun):</span> Land away from cities; rural areas with nature.</li>
+                    <li class="vocab-item"><span class="vocab-word">Attic (Noun):</span> The room inside the roof of a house, used for storage.</li>
+                    <li class="vocab-item"><span class="vocab-word">Dust (Noun):</span> Fine grey powder that falls on things that are not cleaned.</li>
+                    <li class="vocab-item"><span class="vocab-word">Chest (Noun):</span> A strong box used for keeping valuable things safe.</li>
+                    <li class="vocab-item"><span class="vocab-word">Compass (Noun):</span> An instrument that shows direction (North, South, East, West).</li>
+                    <li class="vocab-item"><span class="vocab-word">To Hide (Verb):</span> To put something in a place where people cannot see it.</li>
+                </ul>
+            </div>
+
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">1. What does Marina have on her wrist?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-q1" value="a"> <span>a) A silver bracelet.</span></label>
+                        <label><input type="radio" name="c1-q1" value="b"> <span>b) A birthmark shaped like a crown.</span></label>
+                        <label><input type="radio" name="c1-q1" value="c"> <span>c) A scar from an accident.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">2. Why was the compass special?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-q2" value="a"> <span>a) It was made of gold and diamonds.</span></label>
+                        <label><input type="radio" name="c1-q2" value="b"> <span>b) It was broken and old.</span></label>
+                        <label><input type="radio" name="c1-q2" value="c"> <span>c) It was made of rose quartz and it glowed.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">3. What did Marina do when Aunt Vanda called her?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-q3" value="a"> <span>a) She showed the compass to her aunt.</span></label>
+                        <label><input type="radio" name="c1-q3" value="b"> <span>b) She threw the compass away.</span></label>
+                        <label><input type="radio" name="c1-q3" value="c"> <span>c) She put the compass in her pocket and lied.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Past Simple - Marina ______ (to open) the wooden chest.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-g1" value="a"> <span>a) opended</span></label>
+                        <label><input type="radio" name="c1-g1" value="b"> <span>b) opened</span></label>
+                        <label><input type="radio" name="c1-g1" value="c"> <span>c) open</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="a">
+                    <span class="q-title">Grammar: Adjectives - How does the story describe the attic?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-g2" value="a"> <span>a) It was dark and dusty.</span></label>
+                        <label><input type="radio" name="c1-g2" value="b"> <span>b) It was pink and clean.</span></label>
+                        <label><input type="radio" name="c1-g2" value="c"> <span>c) It was warm and bright.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Prepositions - The chest was ______ the old painting.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1-g3" value="a"> <span>a) on</span></label>
+                        <label><input type="radio" name="c1-g3" value="b"> <span>b) behind</span></label>
+                        <label><input type="radio" name="c1-g3" value="c"> <span>c) between</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch2">
+            <h1>Chapter 2: The Historian</h1>
+            <div class="story-meta">
+                <strong>Setting:</strong> The Town Library<br>
+                <strong>Mood:</strong> Romantic, Awkward, Intriguing
+            </div>
+            <div class="story-text">
+                <p>The next day, Marina took the bus to the small town nearby. She wanted to find answers about the strange compass. She went to the library. It was a quiet building with tall shelves full of books.</p>
+                <p>Marina was looking for books about "Magic Crystals" when she dropped her bag. The pink compass fell on the floor with a loud noise. <em>Clack!</em></p>
+                <p>A young man picked it up. He was tall, handsome, and wore glasses. He looked very intelligent.</p>
+                <p>"Careful," he said. He looked at the compass and his eyes opened wide. "Where did you get this? This is the Rose Quartz of the Lost Kingdom."</p>
+                <p>Marina was shocked. "Who are you?"</p>
+                <p>"I am Leo," he smiled. "I am a history student from the university. I study legends about magic in Brazil. This compass is not a toy. It is a map."</p>
+                <p>Marina blushed. Leo was very cute. "Can you help me?" she asked.</p>
+                <p>"Yes," Leo said. "But we cannot stay here. It is dangerous. The compass is pointing North... to the Amazon Rainforest."</p>
+            </div>
+
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list">
+                    <li class="vocab-item"><span class="vocab-word">Nearby (Adjective):</span> Not far away; close.</li>
+                    <li class="vocab-item"><span class="vocab-word">Shelves (Noun):</span> Flat boards on a wall or cupboard where you put books.</li>
+                    <li class="vocab-item"><span class="vocab-word">To Drop (Verb):</span> To let something fall by accident.</li>
+                    <li class="vocab-item"><span class="vocab-word">Handsome (Adjective):</span> A word used to describe a man who looks good/attractive.</li>
+                    <li class="vocab-item"><span class="vocab-word">Shocked (Adjective):</span> Feeling very surprised.</li>
+                    <li class="vocab-item"><span class="vocab-word">Legend (Noun):</span> An old story from the past that might be true or false.</li>
+                    <li class="vocab-item"><span class="vocab-word">To Blush (Verb):</span> When your face turns red because you are shy or embarrassed.</li>
+                </ul>
+            </div>
+
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">1. Where did Marina meet Leo?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-q1" value="a"> <span>a) At the farmhouse.</span></label>
+                        <label><input type="radio" name="c2-q1" value="b"> <span>b) At the town library.</span></label>
+                        <label><input type="radio" name="c2-q1" value="c"> <span>c) At the bus station.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">2. What does Leo study?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-q2" value="a"> <span>a) He studies mathematics.</span></label>
+                        <label><input type="radio" name="c2-q2" value="b"> <span>b) He studies biology in the Amazon.</span></label>
+                        <label><input type="radio" name="c2-q2" value="c"> <span>c) He studies history and legends.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">3. How did Marina feel when she talked to Leo?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-q3" value="a"> <span>a) She felt angry.</span></label>
+                        <label><input type="radio" name="c2-q3" value="b"> <span>b) She felt shy and blushed.</span></label>
+                        <label><input type="radio" name="c2-q3" value="c"> <span>c) She felt bored.</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Past Continuous - Marina ______ (look) for books when she dropped her bag.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-g1" value="a"> <span>a) looked</span></label>
+                        <label><input type="radio" name="c2-g1" value="b"> <span>b) was looking</span></label>
+                        <label><input type="radio" name="c2-g1" value="c"> <span>c) is looking</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-title">Grammar: Object Pronouns - Leo picked ______ up.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-g2" value="a"> <span>a) him</span></label>
+                        <label><input type="radio" name="c2-g2" value="b"> <span>b) it</span></label>
+                        <label><input type="radio" name="c2-g2" value="c"> <span>c) her</span></label>
+                    </div>
+                </div>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-title">Grammar: Connectors - The compass is beautiful, ______ it is dangerous.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2-g3" value="a"> <span>a) so</span></label>
+                        <label><input type="radio" name="c2-g3" value="b"> <span>b) because</span></label>
+                        <label><input type="radio" name="c2-g3" value="c"> <span>c) but</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch3">
+            <h1>Chapter 3: The Green Journey</h1>
+            <div class="story-meta">
+                <strong>Setting:</strong> Leaving the Farmhouse / On the Road<br>
+                <strong>Mood:</strong> Exciting, Suspicious, Adventurous
+            </div>
+            <div class="story-text">
+                <p>Marina ran back to the farmhouse. She packed her bags quickly. She took her favorite pink dress, a warm jacket, and the magical compass. Leo was waiting outside in his old, green Jeep.</p>
+                <p>Suddenly, Aunt Vanda stood at the door. She did not look happy.</p>
+                <p>"Where are you going, Marina?" Vanda asked. Her voice was cold.</p>
+                <p>"I... I am going on a trip with Leo," Marina said nervously. "We are going to visit the Amazon."</p>
+                <p>Vanda looked at Leo and then at the compass in Marina's hand. Her expression changed. She smiled, but the smile did not reach her eyes.</p>
+                <p>"The Amazon is dangerous," Vanda said. "You need protection. I will come with you."</p>
+                <p>Marina was surprised. She wanted to say no, but she was too polite. "Okay, Auntie. You can come."</p>
+                <p>Leo looked worried, but he started the car. The three of them drove away from the farmhouse. The sun was setting, and the road to the North was long. The adventure was beginning, but Marina felt a strange chill in the air.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list">
+                    <li class="vocab-item"><span class="vocab-word">To Pack (Verb):</span> To put your clothes and things into bags for a trip.</li>
+                    <li class="vocab-item"><span class="vocab-word">Jeep (Noun):</span> A strong car used for driving on rough roads.</li>
+                    <li class="vocab-item"><span class="vocab-word">Voice (Noun):</span> The sound you make when you speak.</li>
+                    <li class="vocab-item"><span class="vocab-word">Polite (Adjective):</span> Showing good manners; not rude.</li>
+                    <li class="vocab-item"><span class="vocab-word">Worried (Adjective):</span> Thinking about bad things that might happen; anxious.</li>
+                    <li class="vocab-item"><span class="vocab-word">To Set (Verb):</span> When the sun goes down at the end of the day (Sunset).</li>
+                    <li class="vocab-item"><span class="vocab-word">Chill (Noun):</span> A sudden feeling of cold, often because of fear.</li>
+                </ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="c"><span class="q-title">1. What vehicle does Leo drive?</span><div class="options"><label><input type="radio" name="c3-q1" value="a"> <span>a) A red sports car.</span></label><label><input type="radio" name="c3-q1" value="b"> <span>b) A big bus.</span></label><label><input type="radio" name="c3-q1" value="c"> <span>c) An old green Jeep.</span></label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. How did Aunt Vanda react when she heard about the trip?</span><div class="options"><label><input type="radio" name="c3-q2" value="a"> <span>a) She was happy and hugged Marina.</span></label><label><input type="radio" name="c3-q2" value="b"> <span>b) She was cold at first, then insisted on coming.</span></label><label><input type="radio" name="c3-q2" value="c"> <span>c) She told Marina to stay home.</span></label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. Why did Marina say "yes" to Aunt Vanda?</span><div class="options"><label><input type="radio" name="c3-q3" value="a"> <span>a) Because she was polite.</span></label><label><input type="radio" name="c3-q3" value="b"> <span>b) Because she was scared of Leo.</span></label><label><input type="radio" name="c3-q3" value="c"> <span>c) Because she loves her Aunt very much.</span></label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Future (Intentions) - We ______ (visit) the Amazon.</span><div class="options"><label><input type="radio" name="c3-g1" value="a"> <span>a) going to visit</span></label><label><input type="radio" name="c3-g1" value="b"> <span>b) are going to visit</span></label><label><input type="radio" name="c3-g1" value="c"> <span>c) will visiting</span></label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Adverbs - She packed her bags ______.</span><div class="options"><label><input type="radio" name="c3-g2" value="a"> <span>a) quick</span></label><label><input type="radio" name="c3-g2" value="b"> <span>b) quickly</span></label><label><input type="radio" name="c3-g2" value="c"> <span>c) quicker</span></label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Past Simple (Irregular) - Vanda ______ (stand) at the door.</span><div class="options"><label><input type="radio" name="c3-g3" value="a"> <span>a) standed</span></label><label><input type="radio" name="c3-g3" value="b"> <span>b) stood</span></label><label><input type="radio" name="c3-g3" value="c"> <span>c) standing</span></label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch4">
+            <h1>Chapter 4: The Emerald of the River</h1>
+            <div class="story-meta"><strong>Setting:</strong> The Amazon Rainforest / Manaus<br><strong>Mood:</strong> Magical, Wet, Wonder</div>
+            <div class="story-text">
+                <p>After a long drive, they arrived in Manaus. The air was hot and humid. Marina looked at the giant river. It was brown and vast.</p>
+                <p>"We need a boat," Leo said. He rented a small blue canoe. Aunt Vanda complained about the heat, but she sat in the back of the boat.</p>
+                <p>They traveled to the "Meeting of Waters," where the black river meets the brown river. It was beautiful. Suddenly, the pink compass in Marina's hand glowed very bright. It pointed to a quiet lagoon full of giant water lilies (<em>Vitória-Régia</em>).</p>
+                <p>"Look!" Marina pointed. One water lily was different. It had pink edges.</p>
+                <p>Leo moved the boat closer. Marina reached into the water. Under the giant leaf, she felt something hard. She pulled it out. It was a silver tiara with a large, green emerald in the center.</p>
+                <p>"It is beautiful," Leo whispered. "Put it on."</p>
+                <p>Marina put the tiara on her head. For a moment, she didn't feel the heat or the mosquitoes. She felt like a queen.</p>
+                <p>In the back of the boat, Aunt Vanda watched them. Her eyes were narrow and jealous.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Humid (Adjective):</span> When the air feels wet and heavy.</li><li class="vocab-item"><span class="vocab-word">To Complain (Verb):</span> To say that you are not happy.</li><li class="vocab-item"><span class="vocab-word">Canoe (Noun):</span> A light, narrow boat.</li><li class="vocab-item"><span class="vocab-word">Lagoon (Noun):</span> A small area of water separated from the main river.</li><li class="vocab-item"><span class="vocab-word">Edge (Noun):</span> The outside limit or boundary of an object.</li><li class="vocab-item"><span class="vocab-word">To Reach (Verb):</span> To stretch your arm to touch something.</li><li class="vocab-item"><span class="vocab-word">Narrow (Adjective):</span> Small width; not wide.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. How did Aunt Vanda feel about the trip on the boat?</span><div class="options"><label><input type="radio" name="c4-q1" value="a"> a) She loved the nature.</label><label><input type="radio" name="c4-q1" value="b"> b) She complained about the heat.</label><label><input type="radio" name="c4-q1" value="c"> c) She fell asleep.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Where was the Emerald Tiara hidden?</span><div class="options"><label><input type="radio" name="c4-q2" value="a"> a) Inside a fish.</label><label><input type="radio" name="c4-q2" value="b"> b) Under a giant water lily.</label><label><input type="radio" name="c4-q2" value="c"> c) On top of a tree.</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. What happened when Marina put the tiara on?</span><div class="options"><label><input type="radio" name="c4-q3" value="a"> a) She felt like a queen.</label><label><input type="radio" name="c4-q3" value="b"> b) It was too heavy.</label><label><input type="radio" name="c4-q3" value="c"> c) Aunt Vanda stole it.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Comparatives - The Amazon river is ______ (big) than the rivers in São Paulo.</span><div class="options"><label><input type="radio" name="c4-g1" value="a"> a) biger</label><label><input type="radio" name="c4-g1" value="b"> b) bigger</label><label><input type="radio" name="c4-g1" value="c"> c) biggest</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Adverbs of Frequency - Aunt Vanda ______ complained.</span><div class="options"><label><input type="radio" name="c4-g2" value="a"> a) always</label><label><input type="radio" name="c4-g2" value="b"> b) yesterday</label><label><input type="radio" name="c4-g2" value="c"> c) tomorrow</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Prepositions - "They traveled ______ the river."</span><div class="options"><label><input type="radio" name="c4-g3" value="a"> a) on</label><label><input type="radio" name="c4-g3" value="b"> b) in</label><label><input type="radio" name="c4-g3" value="c"> c) at</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch5">
+            <h1>Chapter 5: Shadows in the Jungle</h1>
+            <div class="story-meta"><strong>Setting:</strong> A Jungle Lodge (Nighttime)<br><strong>Mood:</strong> Scary, Romantic, Tense</div>
+            <div class="story-text">
+                <p>That night, they slept in a small wooden lodge in the forest. The sounds of the jungle were loud. There were monkeys and birds calling.</p>
+                <p>Marina could not sleep. She went outside to look at the stars. The tiara was safe in her bag, but she felt anxious.</p>
+                <p>Suddenly, she heard a branch break. <em>Snap!</em></p>
+                <p>"Who is there?" she asked.</p>
+                <p>A dark shadow moved behind a tree. It was not an animal. It looked like a person. Marina was scared. She stepped back and almost fell, but strong arms caught her.</p>
+                <p>It was Leo.</p>
+                <p>"Are you okay?" he asked softly. He held her close.</p>
+                <p>"I saw someone," Marina whispered. "I think someone is following us."</p>
+                <p>Leo looked into the dark forest, but the shadow was gone. "I will protect you, Marina," he said. "I promise."</p>
+                <p>They stood very close under the moonlight. Marina looked at Leo's lips. She wanted to kiss him, but suddenly Aunt Vanda opened her door. "Go to sleep!" she shouted. The romantic moment was over.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Lodge (Noun):</span> A small house or hotel in the countryside or forest.</li><li class="vocab-item"><span class="vocab-word">Branch (Noun):</span> A part of a tree that grows out from the trunk.</li><li class="vocab-item"><span class="vocab-word">Shadow (Noun):</span> A dark shape made when something blocks the light.</li><li class="vocab-item"><span class="vocab-word">To Catch (Verb):</span> To hold something that is falling (Past: Caught).</li><li class="vocab-item"><span class="vocab-word">Softly (Adverb):</span> In a gentle or quiet way.</li><li class="vocab-item"><span class="vocab-word">Moonlight (Noun):</span> The light that comes from the moon.</li><li class="vocab-item"><span class="vocab-word">To Shout (Verb):</span> To speak very loudly (usually in anger).</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Why did Marina go outside?</span><div class="options"><label><input type="radio" name="c5-q1" value="a"> a) She wanted to find the shadow.</label><label><input type="radio" name="c5-q1" value="b"> b) She couldn't sleep.</label><label><input type="radio" name="c5-q1" value="c"> c) She lost the tiara.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. Who caught Marina when she almost fell?</span><div class="options"><label><input type="radio" name="c5-q2" value="a"> a) Aunt Vanda.</label><label><input type="radio" name="c5-q2" value="b"> b) The shadow.</label><label><input type="radio" name="c5-q2" value="c"> c) Leo.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Why didn't Marina and Leo kiss?</span><div class="options"><label><input type="radio" name="c5-q3" value="a"> a) Leo didn't want to.</label><label><input type="radio" name="c5-q3" value="b"> b) Aunt Vanda interrupted them.</label><label><input type="radio" name="c5-q3" value="c"> c) It started to rain.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Past Continuous - A shadow ______ (move) behind the tree.</span><div class="options"><label><input type="radio" name="c5-g1" value="a"> a) moving</label><label><input type="radio" name="c5-g1" value="b"> b) was moving</label><label><input type="radio" name="c5-g1" value="c"> c) were moving</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">Grammar: Object Pronouns - Leo promised to protect ______.</span><div class="options"><label><input type="radio" name="c5-g2" value="a"> a) she</label><label><input type="radio" name="c5-g2" value="b"> b) hers</label><label><input type="radio" name="c5-g2" value="c"> c) her</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Future with Will (Promises) - "I ______ protect you," said Leo.</span><div class="options"><label><input type="radio" name="c5-g3" value="a"> a) will</label><label><input type="radio" name="c5-g3" value="b"> b) am going to</label><label><input type="radio" name="c5-g3" value="c"> c) want</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch6">
+            <h1>Chapter 6: The Golden City</h1>
+            <div class="story-meta"><strong>Setting:</strong> Salvador, Bahia (Pelourinho)<br><strong>Mood:</strong> Colorful, Energetic, Musical</div>
+            <div class="story-text">
+                <p>The next morning, the compass pointed East.</p>
+                <p>"Next stop: Bahia!" said Leo.</p>
+                <p>They took a plane to Salvador. When they arrived, the energy was different. The city was full of colors: yellow houses, blue doors, and pink churches. People were dancing on the streets to the sound of drums.</p>
+                <p>"This is Pelourinho," Leo explained. "It is the historical heart of Brazil."</p>
+                <p>Marina loved it. She bought a white lace dress and ate <em>acarajé</em>. But they had a mission. The compass was vibrating strongly. It pointed to a large, golden church at the top of a steep hill.</p>
+                <p>"The next piece is there," Marina said.</p>
+                <p>Aunt Vanda was tired. "I hate these hills," she said. "I will wait in the hotel."</p>
+                <p>This was perfect. Marina and Leo walked up the hill alone. The sun was hot, and the music was loud. Marina felt happy, but she didn't know that the hardest part of their journey was coming soon.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Energy (Noun):</span> The feeling or vibe of a place.</li><li class="vocab-item"><span class="vocab-word">Drums (Noun):</span> Musical instruments you hit.</li><li class="vocab-item"><span class="vocab-word">Lace (Noun):</span> A delicate fabric with holes.</li><li class="vocab-item"><span class="vocab-word">Mission (Noun):</span> An important job or task.</li><li class="vocab-item"><span class="vocab-word">Steep (Adjective):</span> A hill that goes up very quickly.</li><li class="vocab-item"><span class="vocab-word">Alone (Adjective):</span> With no other people.</li><li class="vocab-item"><span class="vocab-word">To Hate (Verb):</span> To dislike something very much.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="c"><span class="q-title">1. How did they travel to Salvador?</span><div class="options"><label><input type="radio" name="c6-q1" value="a"> a) By car.</label><label><input type="radio" name="c6-q1" value="b"> b) By boat.</label><label><input type="radio" name="c6-q1" value="c"> c) By plane.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. What did Marina buy in Salvador?</span><div class="options"><label><input type="radio" name="c6-q2" value="a"> a) A drum.</label><label><input type="radio" name="c6-q2" value="b"> b) A white lace dress.</label><label><input type="radio" name="c6-q2" value="c"> c) A golden church.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Where was Aunt Vanda?</span><div class="options"><label><input type="radio" name="c6-q3" value="a"> a) Dancing.</label><label><input type="radio" name="c6-q3" value="b"> b) Waiting in the hotel.</label><label><input type="radio" name="c6-q3" value="c"> c) Hiding.</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Superlatives - The ______ (hard) part of the journey was coming.</span><div class="options"><label><input type="radio" name="c6-g1" value="a"> a) hardest</label><label><input type="radio" name="c6-g1" value="b"> b) most hard</label><label><input type="radio" name="c6-g1" value="c"> c) harder</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">Grammar: Connectors - Marina felt happy, ______ she didn't know the future.</span><div class="options"><label><input type="radio" name="c6-g2" value="a"> a) so</label><label><input type="radio" name="c6-g2" value="b"> b) because</label><label><input type="radio" name="c6-g2" value="c"> c) but</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Verbs of Preference - Aunt Vanda ______ (hate) walking up hills.</span><div class="options"><label><input type="radio" name="c6-g3" value="a"> a) hate</label><label><input type="radio" name="c6-g3" value="b"> b) hates</label><label><input type="radio" name="c6-g3" value="c"> c) hating</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch7">
+            <h1>Chapter 7: The Rhythm of Magic</h1>
+            <div class="story-meta"><strong>Setting:</strong> Inside the Golden Church<br><strong>Mood:</strong> Spiritual, Ancient, Awe-inspiring</div>
+            <div class="story-text">
+                <p>Marina and Leo entered the famous church. It was incredible. The walls were covered in gold. It was quiet and cool inside.</p>
+                <p>The pink compass pulled Marina toward the main altar.</p>
+                <p>"Look," whispered Leo. "Behind the statue of the angel."</p>
+                <p>Marina reached behind the statue. Her hand touched something cold metal. She pulled out a long, golden rod with a pink crystal on top. It was the <strong>Golden Scepter</strong>.</p>
+                <p>Suddenly, the church bells started to ring. <em>Dong! Dong!</em> The Scepter glowed, and the Tiara in Marina's bag started to glow too.</p>
+                <p>"They are connecting," Leo said. "We have all the pieces now: The Map, The Tiara, and The Scepter."</p>
+                <p>Marina felt powerful, but also scared. "We need to leave, Leo. I have a bad feeling."</p>
+                <p>They ran out of the church. The sun was setting over the ocean. It was a beautiful view, but Marina could not enjoy it. She felt that eyes were watching her from the shadows.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Altar (Noun):</span> A special table in a church.</li><li class="vocab-item"><span class="vocab-word">Statue (Noun):</span> A figure made of stone or metal.</li><li class="vocab-item"><span class="vocab-word">Scepter (Noun):</span> A decorated stick carried by a queen.</li><li class="vocab-item"><span class="vocab-word">Bell (Noun):</span> A hollow metal object that rings.</li><li class="vocab-item"><span class="vocab-word">To Connect (Verb):</span> To join together.</li><li class="vocab-item"><span class="vocab-word">View (Noun):</span> Everything you can see from a place.</li><li class="vocab-item"><span class="vocab-word">Shadows (Noun):</span> Dark areas.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What was special about the church walls?</span><div class="options"><label><input type="radio" name="c7-q1" value="a"> a) Painted pink.</label><label><input type="radio" name="c7-q1" value="b"> b) Covered in gold.</label><label><input type="radio" name="c7-q1" value="c"> c) Made of wood.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Where did Marina find the Golden Scepter?</span><div class="options"><label><input type="radio" name="c7-q2" value="a"> a) Under the floor.</label><label><input type="radio" name="c7-q2" value="b"> b) Behind a statue.</label><label><input type="radio" name="c7-q2" value="c"> c) In Leo's backpack.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Why did they leave quickly?</span><div class="options"><label><input type="radio" name="c7-q3" value="a"> a) The church was closing.</label><label><input type="radio" name="c7-q3" value="b"> b) Marina had a bad feeling.</label><label><input type="radio" name="c7-q3" value="c"> c) They were hungry.</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Past Simple - The bells ______ (begin) to ring.</span><div class="options"><label><input type="radio" name="c7-g1" value="a"> a) began</label><label><input type="radio" name="c7-g1" value="b"> b) beginned</label><label><input type="radio" name="c7-g1" value="c"> c) begun</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">Grammar: Possessive Adjectives - The Scepter was in ______ hand.</span><div class="options"><label><input type="radio" name="c7-g2" value="a"> a) she</label><label><input type="radio" name="c7-g2" value="b"> b) hers</label><label><input type="radio" name="c7-g2" value="c"> c) her</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Prepositions - The sun was setting ______ the ocean.</span><div class="options"><label><input type="radio" name="c7-g3" value="a"> a) under</label><label><input type="radio" name="c7-g3" value="b"> b) over</label><label><input type="radio" name="c7-g3" value="c"> c) in</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch8">
+            <h1>Chapter 8: The Cold Smile</h1>
+            <div class="story-meta"><strong>Setting:</strong> A Hotel Room<br><strong>Mood:</strong> Shocking, Sad, Betrayal</div>
+            <div class="story-text">
+                <p>They traveled South to meet the "Final Point" on the map. They stopped at a hotel to rest. Marina put the three magical artifacts on the table: The Compass, The Tiara, and The Scepter.</p>
+                <p>"We did it," Marina smiled. "We are safe."</p>
+                <p>The door opened. It was Aunt Vanda. She was holding a key, but it was not her room key. It was the key to Marina's room. She walked in and locked the door behind her. <em>Click.</em></p>
+                <p>"You did a good job, Marina," Vanda said. Her voice was not kind anymore. It was cold like ice.</p>
+                <p>"Auntie?" Marina asked.</p>
+                <p>"I am not your aunt," Vanda laughed. "I am General Vanda of the Dark Army. I stole you when you were a baby because I wanted to find the Royal Artifacts. Only a princess can find them. So, I waited."</p>
+                <p>Marina started to cry. "You lied to me my whole life!"</p>
+                <p>Vanda grabbed the artifacts. "Thank you for finding my treasure, Princess. Now, goodbye."</p>
+                <p>Vanda pushed Leo against the wall, took the magical items, and ran out of the room. She locked them inside.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">To Rest (Verb):</span> To relax.</li><li class="vocab-item"><span class="vocab-word">To Lock (Verb):</span> To close a door with a key.</li><li class="vocab-item"><span class="vocab-word">General (Noun):</span> A high-ranking officer in an army.</li><li class="vocab-item"><span class="vocab-word">Army (Noun):</span> A military force.</li><li class="vocab-item"><span class="vocab-word">To Steal (Verb):</span> To take something without permission.</li><li class="vocab-item"><span class="vocab-word">Whole (Adjective):</span> All of something.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What was the shocking truth about Aunt Vanda?</span><div class="options"><label><input type="radio" name="c8-q1" value="a"> a) She was Marina's mother.</label><label><input type="radio" name="c8-q1" value="b"> b) She was a General from a Dark Army.</label><label><input type="radio" name="c8-q1" value="c"> c) She was a fairy.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Why did Vanda wait?</span><div class="options"><label><input type="radio" name="c8-q2" value="a"> a) Because she loved Marina.</label><label><input type="radio" name="c8-q2" value="b"> b) Because only a princess could find the artifacts.</label><label><input type="radio" name="c8-q2" value="c"> c) Because she needed a driver.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. What did Vanda do?</span><div class="options"><label><input type="radio" name="c8-q3" value="a"> a) Gave Marina a hug.</label><label><input type="radio" name="c8-q3" value="b"> b) Locked Marina and Leo inside.</label><label><input type="radio" name="c8-q3" value="c"> c) Destroyed the artifacts.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Reflexive Pronouns - Vanda locked the door behind ______.</span><div class="options"><label><input type="radio" name="c8-g1" value="a"> a) she</label><label><input type="radio" name="c8-g1" value="b"> b) herself</label><label><input type="radio" name="c8-g1" value="c"> c) her</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">Grammar: Past Simple (Negative) - Her voice ______ (be/not) kind.</span><div class="options"><label><input type="radio" name="c8-g2" value="a"> a) weren't</label><label><input type="radio" name="c8-g2" value="b"> b) didn't be</label><label><input type="radio" name="c8-g2" value="c"> c) was not</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Connectors - I stole you ______ I wanted the artifacts.</span><div class="options"><label><input type="radio" name="c8-g3" value="a"> a) because</label><label><input type="radio" name="c8-g3" value="b"> b) so</label><label><input type="radio" name="c8-g3" value="c"> c) but</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch9">
+            <h1>Chapter 9: The Waterfall Portal</h1>
+            <div class="story-meta"><strong>Setting:</strong> Foz do Iguaçu<br><strong>Mood:</strong> Loud, Wet, High Stakes Action</div>
+            <div class="story-text">
+                <p>Leo broke the door of the hotel room. "We have to stop her!" he shouted.</p>
+                <p>They drove fast to Foz do Iguaçu. The sound of the water was like thunder. <em>ROAR!</em> It was the largest waterfall system in the world. The spray of the water created a giant rainbow in the air.</p>
+                <p>They saw Vanda on the main bridge. She was standing in the middle of the "Devil's Throat" walkway. She was holding the artifacts up to the sky. She wanted to open the portal to the Magic Dimension and take over the kingdom.</p>
+                <p>"Stop!" screamed Marina.</p>
+                <p>The bridge was wet and slippery. Marina ran towards Vanda. The water soaked her pink dress.</p>
+                <p>Vanda laughed. "You are too late!" She put the Tiara on her own head.</p>
+                <p>But something strange happened. The Tiara did not glow pink for Vanda. It turned black. The artifacts started to shake. They knew Vanda was evil. The magic rejected her.</p>
+                <p>Vanda looked confused. "Why isn't it working?" she screamed.</p>
+                <p>"Because," Leo shouted over the noise of the water, "You are not the Queen!"</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Thunder (Noun):</span> Loud noise during a storm.</li><li class="vocab-item"><span class="vocab-word">System (Noun):</span> A set of connected things.</li><li class="vocab-item"><span class="vocab-word">Spray (Noun):</span> Water flying in the air.</li><li class="vocab-item"><span class="vocab-word">Rainbow (Noun):</span> An arch of colors.</li><li class="vocab-item"><span class="vocab-word">Walkway (Noun):</span> A structure built for people to walk on.</li><li class="vocab-item"><span class="vocab-word">Slippery (Adjective):</span> Difficult to stand on.</li><li class="vocab-item"><span class="vocab-word">To Reject (Verb):</span> To refuse to accept.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What did the waterfalls sound like?</span><div class="options"><label><input type="radio" name="c9-q1" value="a"> a) Like soft music.</label><label><input type="radio" name="c9-q1" value="b"> b) Like thunder.</label><label><input type="radio" name="c9-q1" value="c"> c) Like crying.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Where was Vanda standing?</span><div class="options"><label><input type="radio" name="c9-q2" value="a"> a) In the parking lot.</label><label><input type="radio" name="c9-q2" value="b"> b) On the walkway.</label><label><input type="radio" name="c9-q2" value="c"> c) On a boat.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">3. Why didn't the Tiara work for Vanda?</span><div class="options"><label><input type="radio" name="c9-q3" value="a"> a) It was broken.</label><label><input type="radio" name="c9-q3" value="b"> b) It was backwards.</label><label><input type="radio" name="c9-q3" value="c"> c) The magic rejected her.</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Comparatives - The waterfalls were ______ (loud) than the city.</span><div class="options"><label><input type="radio" name="c9-g1" value="a"> a) louder</label><label><input type="radio" name="c9-g1" value="b"> b) loudder</label><label><input type="radio" name="c9-g1" value="c"> c) more loud</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Past Continuous - Vanda ______ (stand) on the bridge.</span><div class="options"><label><input type="radio" name="c9-g2" value="a"> a) is standing</label><label><input type="radio" name="c9-g2" value="b"> b) was standing</label><label><input type="radio" name="c9-g2" value="c"> c) stood</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Possessive Pronouns - The Tiara is not ______.</span><div class="options"><label><input type="radio" name="c9-g3" value="a"> a) yours</label><label><input type="radio" name="c9-g3" value="b"> b) your</label><label><input type="radio" name="c9-g3" value="c"> c) you</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch10">
+            <h1>Chapter 10: The Rose Princess</h1>
+            <div class="story-meta"><strong>Setting:</strong> The Bridge at Foz do Iguaçu<br><strong>Mood:</strong> Triumphant, Magical, Romantic</div>
+            <div class="story-text">
+                <p>The artifacts shook violently in Vanda's hands. They burned her skin! Vanda screamed and dropped them on the wet ground.</p>
+                <p>"The magic knows you are evil!" Leo shouted.</p>
+                <p>Vanda looked at Marina with fear. She didn't want to fight the magic. She turned around and ran away into the crowd of tourists. She disappeared.</p>
+                <p>Marina walked toward the artifacts. The water from the falls was heavy, but she didn't feel cold. She felt fire in her heart. She picked up the Tiara, the Scepter, and the Compass.</p>
+                <p>Immediately, a column of pink light shot up into the sky. The water of the falls stopped moving. It froze in time. The rainbow transformed into a large, shimmering gate.</p>
+                <p>Marina’s wet dress changed. It became a magnificent gown made of pink silk and diamonds. The birthmark on her wrist glowed.</p>
+                <p>"You are the Queen of the Rose Kingdom," Leo whispered. He looked sad. "You have to go."</p>
+                <p>Marina looked at the magical gate, then at Leo. She took his hand.</p>
+                <p>"I am the Queen," she said, smiling. "And a Queen needs a King. Will you come with me?"</p>
+                <p>Leo smiled. "To the end of the world."</p>
+                <p>Together, they stepped into the rainbow light. They left Brazil, but their adventure was just beginning.</p>
+            </div>
+            <div class="section-box">
+                <h2>Vocabulary</h2>
+                <ul class="vocab-list"><li class="vocab-item"><span class="vocab-word">Violently (Adverb):</span> With a lot of force.</li><li class="vocab-item"><span class="vocab-word">To Burn (Verb):</span> To hurt with heat.</li><li class="vocab-item"><span class="vocab-word">Crowd (Noun):</span> A large group of people.</li><li class="vocab-item"><span class="vocab-word">To Freeze (Verb):</span> To stop moving completely.</li><li class="vocab-item"><span class="vocab-word">Gate (Noun):</span> A door to enter a place.</li><li class="vocab-item"><span class="vocab-word">Silk (Noun):</span> A soft, expensive fabric.</li><li class="vocab-item"><span class="vocab-word">To Step (Verb):</span> To walk.</li></ul>
+            </div>
+            <div class="section-box" style="background: #fff; border: 2px solid var(--primary-light);">
+                <h2>Comprehension & Grammar</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Why did Vanda drop the artifacts?</span><div class="options"><label><input type="radio" name="c10-q1" value="a"> a) Too heavy.</label><label><input type="radio" name="c10-q1" value="b"> b) They burned her hands.</label><label><input type="radio" name="c10-q1" value="c"> c) To give them to Marina.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. What happened to Marina's clothes?</span><div class="options"><label><input type="radio" name="c10-q2" value="a"> a) Stayed wet.</label><label><input type="radio" name="c10-q2" value="b"> b) Dried instantly.</label><label><input type="radio" name="c10-q2" value="c"> c) Changed into a pink gown.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">3. What did Marina ask Leo?</span><div class="options"><label><input type="radio" name="c10-q3" value="a"> a) Go back to São Paulo.</label><label><input type="radio" name="c10-q3" value="b"> b) Help find Vanda.</label><label><input type="radio" name="c10-q3" value="c"> c) Come to the new world.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">Grammar: Past Simple - The water ______ (freeze) in time.</span><div class="options"><label><input type="radio" name="c10-g1" value="a"> a) freezded</label><label><input type="radio" name="c10-g1" value="b"> b) froze</label><label><input type="radio" name="c10-g1" value="c"> c) frozen</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">Grammar: Adverbs - A column of light shot ______ into the sky.</span><div class="options"><label><input type="radio" name="c10-g2" value="a"> a) up</label><label><input type="radio" name="c10-g2" value="b"> b) on</label><label><input type="radio" name="c10-g2" value="c"> c) at</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">Grammar: Future with Will - "Will you ______ with me?"</span><div class="options"><label><input type="radio" name="c10-g3" value="a"> a) coming</label><label><input type="radio" name="c10-g3" value="b"> b) came</label><label><input type="radio" name="c10-g3" value="c"> c) come</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="finish">
+            <div style="text-align: center; padding: 4rem 0;">
+                <h1 style="margin-bottom: 2rem;">The End!</h1>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Congratulations! You have completed the story.</p>
+                <div style="font-size: 4rem; margin-bottom: 2rem;">💖✨👸</div>
+                <p>Teacher Alex is very proud of you!</p>
+                <br>
+                <button class="nav-btn" style="margin: 0 auto;" onclick="location.reload()">Read Again</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="nav-footer">
+        <button class="nav-btn" id="prevBtn" onclick="changeChapter(-1)" disabled>Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeChapter(1)">Start Reading ➡️</button>
+    </footer>
+
+    <script>
+        // Logic to handle navigation and quizzes
+        const chapters = [
+            'cover', 'prologue', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9', 'ch10', 'finish'
+        ];
+        let currentIndex = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicator = document.getElementById('chapter-indicator');
+
+        function updateUI() {
+            // Update buttons
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === chapters.length - 1;
+            
+            // Text for next button
+            if (currentIndex === 0) nextBtn.innerHTML = "Start Reading ➡️";
+            else if (currentIndex === chapters.length - 2) nextBtn.innerHTML = "Finish 🏁";
+            else if (currentIndex === chapters.length - 1) nextBtn.style.display = 'none';
+            else nextBtn.innerHTML = "Next Chapter ➡️";
+
+            // Hide/Show sections
+            document.querySelectorAll('.chapter').forEach(el => el.classList.remove('active'));
+            document.getElementById(chapters[currentIndex]).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0,0);
+
+            // Update Header Text
+            if(currentIndex === 0) indicator.innerText = "Cover";
+            else if(currentIndex === 12) indicator.innerText = "Complete";
+            else if(currentIndex === 1) indicator.innerText = "Prologue";
+            else indicator.innerText = `Chapter ${currentIndex - 1} / 10`;
+        }
+
+        function changeChapter(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= chapters.length) currentIndex = chapters.length - 1;
+            updateUI();
+        }
+
+        // Quiz Logic
+        document.querySelectorAll('.quiz-question').forEach(question => {
+            const inputs = question.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    const selectedValue = input.value;
+                    const correctAnswer = question.getAttribute('data-correct');
+                    const parentLabel = input.parentElement;
+
+                    // Reset styling for this question
+                    question.querySelectorAll('label').forEach(l => l.classList.remove('correct', 'wrong'));
+
+                    if (selectedValue === correctAnswer) {
+                        parentLabel.classList.add('correct');
+                    } else {
+                        parentLabel.classList.add('wrong');
+                    }
+                });
+            });
+        });
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
