@@ -163,7 +163,7 @@
             </div>
             <div class="section-box">
                 <h2>Grammar Check</h2>
-                <div class="quiz-question" data-correct="a"><span class="q-title">1. Past Simple: The monsters ______ (hunt) humans long ago.</span><div class="options"><label><input type="radio" name="p-g1" value="a"> a) hunted</label><label><input type="radio" name="p-g1" value="b"> b) hunted</label><label><input type="radio" name="p-g1" value="c"> c) hunting</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">1. Past Simple: The monsters ______ (hunt) humans long ago.</span><div class="options"><label><input type="radio" name="p-g1" value="a"> a) hunted</label><label><input type="radio" name="p-g1" value="b"> b) hunts</label><label><input type="radio" name="p-g1" value="c"> c) hunting</label></div></div>
                 <div class="quiz-question" data-correct="c"><span class="q-title">2. Prepositions: He stood ______ the highest hill.</span><div class="options"><label><input type="radio" name="p-g2" value="a"> a) in</label><label><input type="radio" name="p-g2" value="b"> b) at</label><label><input type="radio" name="p-g2" value="c"> c) on</label></div></div>
                 <div class="quiz-question" data-correct="a"><span class="q-title">3. Adjectives: The monsters were hungry and ______.</span><div class="options"><label><input type="radio" name="p-g3" value="a"> a) cruel</label><label><input type="radio" name="p-g3" value="b"> b) cruelly</label><label><input type="radio" name="p-g3" value="c"> c) cruelty</label></div></div>
             </div>
@@ -577,14 +577,43 @@
         </div>
 
         <div class="chapter" id="finish">
-            <div style="text-align: center; padding-top: 4rem;">
-                <h1 style="font-size: 3rem;">THE END</h1>
-                <p style="color: var(--muted); margin-bottom: 2rem;">You have completed the story.</p>
-                <div style="font-size: 5rem; margin-bottom: 2rem;">📸⚔️</div>
-                <p>Teacher Alex is proud of your bravery.</p>
-                <br><br>
-                <button class="nav-btn" onclick="location.reload()">READ AGAIN</button>
+            <div style="text-align: center; padding-top: 3rem;">
+                
+                <h1 style="font-size: 3rem; color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue);">HUNT SUCCESSFUL</h1>
+                
+                <p style="color: var(--muted); margin-bottom: 2rem; font-size: 1.1rem; letter-spacing: 1px;">
+                    The Shadow King has fallen. The city is safe.
+                </p>
+                
+                <div style="font-size: 6rem; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(0, 234, 255, 0.5));">
+                    ⚔️🛡️
+                </div>
+                
+                <p style="color: var(--silver); margin-bottom: 3rem; font-family: 'Cinzel', serif;">
+                    "Teacher Alex salutes your bravery, Warden."
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; max-width: 300px; margin: 0 auto;">
+                    
+                    <button class="nav-btn" onclick="sendReport()" style="background: #25D366; color: #000; border-color: #25D366; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 0 15px rgba(37, 211, 102, 0.3);">
+                        <span>📱</span> REPORT MISSION
+                    </button>
+
+                    <button class="nav-btn" onclick="location.reload()" style="background: transparent; border-color: var(--muted); color: var(--muted); width: 100%; opacity: 0.7; box-shadow: none;">
+                        READ AGAIN
+                    </button>
+
+                </div>
             </div>
+
+            <script>
+                function sendReport() {
+                    const phoneNumber = "5537999281560"; 
+                    const message = "Teacher Alex! ⚔️ The Shadow King is defeated. I finished 'The Midnight Guard'. Waiting for my next mission.";
+                    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(url, '_blank');
+                }
+            </script>
         </div>
 
     </main>
