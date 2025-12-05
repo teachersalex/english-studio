@@ -794,13 +794,42 @@
 
         <div class="chapter" id="finish">
             <div style="text-align: center; padding: 4rem 0;">
-                <h1 style="margin-bottom: 2rem;">The End!</h1>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Congratulations! You have completed the story.</p>
-                <div style="font-size: 4rem; margin-bottom: 2rem;">💖✨👸</div>
-                <p>Teacher Alex is very proud of you!</p>
-                <br>
-                <button class="nav-btn" style="margin: 0 auto;" onclick="location.reload()">Read Again</button>
+                
+                <h1 style="font-size: 3.5rem; margin-bottom: 1rem; color: var(--primary);">KINGDOM RESTORED</h1>
+                
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-dark);">
+                    You found your true self. The magic is real.
+                </p>
+                
+                <div style="font-size: 6rem; margin-bottom: 2rem; filter: drop-shadow(0 5px 15px rgba(212, 139, 168, 0.5));">
+                    👑✨
+                </div>
+                
+                <p style="font-family: 'Lora', serif; font-style: italic; color: var(--text-light); margin-bottom: 3rem;">
+                    "Teacher Alex is so proud of your journey, Princess!"
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; max-width: 300px; margin: 0 auto;">
+                    
+                    <button class="nav-btn" onclick="sendReport()" style="background: #25D366; color: white; border: none; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);">
+                        <span>📱</span> SEND MAGIC MESSAGE
+                    </button>
+
+                    <button class="nav-btn" onclick="location.reload()" style="background: #e2e8f0; color: #64748b; width: 100%;">
+                        Read Again
+                    </button>
+
+                </div>
             </div>
+
+            <script>
+                function sendReport() {
+                    const phoneNumber = "5537999281560"; 
+                    const message = "Teacher Alex! 👑 I found the Kingdom! 'The Crystal Compass' is complete. It was magical!";
+                    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(url, '_blank');
+                }
+            </script>
         </div>
 
     </main>
