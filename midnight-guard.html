@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Midnight Guard | Teacher Alex</title>
+    
+    <meta property="og:title" content="The Midnight Guard | Arcane Reader">
+    <meta property="og:description" content="A dark urban fantasy story set in São Paulo. Interactive English learning by Teacher Alex.">
+    <meta property="og:image" content="https://teachersalex.github.io/english-studio/midnight-cover.jpg"> 
+    <meta property="og:url" content="https://teachersalex.github.io/english-studio/midnight-guard.html">
+    <meta name="theme-color" content="#00eaff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-void: #02040a;
+            --neon-blue: #00eaff;
+            --deep-blue: #0077be;
+            --silver: #e2e8f0;
+            --muted: #64748b;
+            --border-glow: 0 0 15px rgba(0, 234, 255, 0.3);
+            --text-glow: 0 0 10px rgba(0, 234, 255, 0.5);
+            --success: #00ff9d;
+            --error: #ff0055;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--silver);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: radial-gradient(circle at 50% 10%, #0a1f3d 0%, #02040a 60%);
+            padding-bottom: 100px;
+        }
+
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .back-btn { text-decoration: none; color: var(--muted); font-size: 1.5rem; transition: 0.3s; }
+        .back-btn:hover { color: var(--neon-blue); text-shadow: var(--text-glow); }
+        .brand { font-family: 'Cinzel', serif; font-weight: 700; color: var(--silver); letter-spacing: 2px; font-size: 0.9rem; }
+
+        .rune-icon {
+            width: 24px; height: 24px; stroke: var(--neon-blue); stroke-width: 2; fill: none;
+            filter: drop-shadow(0 0 5px var(--neon-blue)); animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; filter: drop-shadow(0 0 8px var(--neon-blue)); } }
+
+        main { max-width: 750px; margin: 0 auto; padding: 0 2rem; position: relative; }
+
+        .chapter { display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .chapter.active { display: block; opacity: 1; transform: translateY(0); }
+
+        h1 {
+            font-family: 'Cinzel', serif; font-size: 2.5rem; text-align: center;
+            background: linear-gradient(180deg, #fff 0%, #00eaff 100%); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; filter: drop-shadow(0 0 10px rgba(0,234,255,0.2));
+        }
+
+        h2 { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--neon-blue); margin-bottom: 1.5rem; border-bottom: 1px solid rgba(0, 234, 255, 0.2); padding-bottom: 0.5rem; }
+
+        .story-meta { text-align: center; color: var(--deep-blue); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 3rem; }
+        .story-text { font-size: 1.1rem; color: #d1d5db; text-shadow: 0 0 1px rgba(0,0,0,0.5); }
+        .story-text p { margin-bottom: 1.5rem; }
+        .highlight { color: var(--neon-blue); font-weight: 600; text-shadow: var(--text-glow); }
+
+        .bg-rune { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80vw; height: 80vw; max-width: 600px; max-height: 600px; opacity: 0.03; pointer-events: none; z-index: -1; }
+
+        .section-box {
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 234, 255, 0.1); backdrop-filter: blur(5px);
+            padding: 2rem; margin-bottom: 2rem; position: relative;
+        }
+        .section-box::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 1px solid var(--neon-blue); border-left: 1px solid var(--neon-blue); }
+        .section-box::after { content: ''; position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 1px solid var(--neon-blue); border-right: 1px solid var(--neon-blue); }
+
+        .vocab-item { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .vocab-word { color: var(--neon-blue); font-weight: 700; font-family: 'Cinzel', serif; }
+
+        .options label { display: block; padding: 12px 15px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border: 1px solid transparent; cursor: pointer; transition: 0.3s; }
+        .options label:hover { border-color: var(--neon-blue); box-shadow: var(--border-glow); background: rgba(0, 234, 255, 0.05); }
+        input[type="radio"] { display: none; }
+        .options label.correct { border-color: var(--success); color: var(--success); }
+        .options label.wrong { border-color: var(--error); color: var(--error); }
+        
+        .q-title { display: block; margin-bottom: 10px; font-weight: 600; color: var(--silver); }
+
+        .nav-footer { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 100; }
+        button.nav-btn {
+            background: black; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 12px 30px;
+            font-family: 'Cinzel', serif; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: 0.3s; box-shadow: var(--border-glow);
+        }
+        button.nav-btn:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 30px var(--neon-blue); }
+        button.nav-btn:disabled { border-color: var(--muted); color: var(--muted); cursor: not-allowed; background: transparent; box-shadow: none; }
+
+        @media (max-width: 600px) { h1 { font-size: 2rem; } .nav-footer { width: 90%; justify-content: center; } }
+    </style>
+</head>
+<body>
+
+    <svg class="bg-rune" viewBox="0 0 100 100" stroke="white" stroke-width="0.5" fill="none">
+        <path d="M50 10 L50 90 M50 30 L80 10 M50 30 L20 10" />
+    </svg>
+
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="back-btn">←</a>
+            <div class="brand">THE MIDNIGHT GUARD</div>
+        </div>
+        <svg class="rune-icon" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20m0-16l-6-6m6 6l6-6" /></svg>
+    </header>
+
+    <main>
+        
+        <div class="chapter active" id="cover">
+            <div style="text-align: center; padding-top: 4rem;">
+                <h1 style="font-size: 3.5rem; line-height: 1;">THE<br>MIDNIGHT<br>GUARD</h1>
+                <div style="height: 2px; width: 50px; background: var(--neon-blue); margin: 2rem auto; box-shadow: var(--border-glow);"></div>
+                <p style="color: var(--muted); letter-spacing: 3px; font-size: 0.9rem;">URBAN FANTASY • SAO PAULO</p>
+                <br><br><br>
+                <button class="nav-btn" onclick="changeChapter(1)">ENTER THE DARK</button>
+            </div>
+        </div>
+
+        <div class="chapter" id="prologue">
+            <h1>Prologue: The Silver Barrier</h1>
+            <div class="story-meta">The Hills of São Paulo (1800s) • Ancient, Mythic, Dark</div>
+            <div class="story-text">
+                <p>The world you see is not the only world. There is a world of shadows, hidden behind the rain and the fog.</p>
+                <p>Long ago, creatures from the "Dark Dimension" hunted humans in Brazil. They were hungry and cruel. But humanity had protectors: <strong>The Wardens</strong>. These warriors did not use guns. They used silver swords and magic symbols called <span class="highlight">Runes</span>.</p>
+                <p>In 1890, a Master Warden arrived in São Paulo. He stood on the highest hill. He drew a powerful Rune on the ground with silver dust. This Rune created a <span class="highlight">Barrier</span>. It was an invisible wall of light.</p>
+                <p>For more than 100 years, the Barrier kept the monsters asleep. The city grew. Skyscrapers replaced the forest. People forgot the magic.</p>
+                <p>But now, the silver light is fading. The Rune is breaking. The monsters are waking up, and they smell fresh blood.</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">Hidden</span> <span>(Adjective) Put in a place where it cannot be seen.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Cruel</span> <span>(Adjective) Causing pain to others on purpose; very mean.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Protector</span> <span>(Noun) Someone who keeps others safe.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Dust</span> <span>(Noun) Fine powder (here, magical silver powder).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Invisible</span> <span>(Adjective) Cannot be seen by the eyes.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Skyscraper</span> <span>(Noun) A very tall building in a city.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Fade</span> <span>(Verb) To slowly disappear or lose brightness.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What did the Wardens use to fight?</span><div class="options"><label><input type="radio" name="p-q1" value="a"> a) Guns and cannons.</label><label><input type="radio" name="p-q1" value="b"> b) Silver swords and Runes.</label><label><input type="radio" name="p-q1" value="c"> c) Fire and water.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. What did the Master Warden create?</span><div class="options"><label><input type="radio" name="p-q2" value="a"> a) A castle.</label><label><input type="radio" name="p-q2" value="b"> b) A Barrier (invisible wall).</label><label><input type="radio" name="p-q2" value="c"> c) A bridge.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. What is happening to the Barrier now?</span><div class="options"><label><input type="radio" name="p-q3" value="a"> a) It is getting stronger.</label><label><input type="radio" name="p-q3" value="b"> b) It is fading and breaking.</label><label><input type="radio" name="p-q3" value="c"> c) It is changing color.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="a"><span class="q-title">1. Past Simple: The monsters ______ (hunt) humans long ago.</span><div class="options"><label><input type="radio" name="p-g1" value="a"> a) hunted</label><label><input type="radio" name="p-g1" value="b"> b) hunted</label><label><input type="radio" name="p-g1" value="c"> c) hunting</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. Prepositions: He stood ______ the highest hill.</span><div class="options"><label><input type="radio" name="p-g2" value="a"> a) in</label><label><input type="radio" name="p-g2" value="b"> b) at</label><label><input type="radio" name="p-g2" value="c"> c) on</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. Adjectives: The monsters were hungry and ______.</span><div class="options"><label><input type="radio" name="p-g3" value="a"> a) cruel</label><label><input type="radio" name="p-g3" value="b"> b) cruelly</label><label><input type="radio" name="p-g3" value="c"> c) cruelty</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch1">
+            <h1>Chapter 1: The Shadow Hound</h1>
+            <div class="story-meta">Downtown São Paulo (A Rainy Night) • Suspenseful, Gritty, Neon</div>
+            <div class="story-text">
+                <p>The rain in São Paulo was heavy. It washed the grey streets of the city center. Gabriel adjusted his camera lens. He was a photography student, and he loved the old architecture at night. The neon signs reflected on the wet pavement: blue, pink, and red.</p>
+                <p>He pointed his camera at the Martinelli Building. Through the lens, he saw a stone gargoyle on the roof. It was ugly and terrifying.</p>
+                <p>Suddenly, the gargoyle moved. <em>Blink.</em></p>
+                <p>"I need to sleep," Gabriel whispered. "My eyes are playing tricks on me."</p>
+                <p>He started walking towards the subway. The streets were empty. But he felt a strange <strong>chill</strong>. He felt like someone was watching him. He walked into a dark alleyway to take a shortcut.</p>
+                <p><em>Grrrrr...</em></p>
+                <p>He turned around. Two yellow eyes glowed in the darkness. It was a dog, but it was huge. Its skin was made of black smoke. It was a <strong>Shadow Hound</strong>.</p>
+                <p>The monster jumped. Gabriel screamed and covered his face.</p>
+                <p><em>SWISH!</em></p>
+                <p>A bright silver light cut through the darkness. The monster howled and dissolved into grey ash. Standing in front of Gabriel was a girl. She had short purple hair and wore a long leather coat. She held a glowing silver dagger.</p>
+                <p>She turned to Gabriel. Her eyes were dark and intense.</p>
+                <p>"You have the Sight," she said calmly. "You shouldn't be out this late... unless you want to be dinner."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Reflect</span> <span>(Verb) To throw back light (like a mirror or water).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Pavement</span> <span>(Noun) The hard surface of a street or sidewalk.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Lens</span> <span>(Noun) The glass part of a camera.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Trick</span> <span>(Noun) An illusion; something that is not real.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Alleyway</span> <span>(Noun) A narrow street between buildings.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Glow</span> <span>(Verb) To produce a soft light in the dark.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Ash</span> <span>(Noun) The grey powder left after something burns.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What was Gabriel doing in the city center?</span><div class="options"><label><input type="radio" name="c1-q1" value="a"> a) He was meeting a friend.</label><label><input type="radio" name="c1-q1" value="b"> b) He was taking photos.</label><label><input type="radio" name="c1-q1" value="c"> c) He was buying food.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. What attacked Gabriel?</span><div class="options"><label><input type="radio" name="c1-q2" value="a"> a) A thief.</label><label><input type="radio" name="c1-q2" value="b"> b) A normal dog.</label><label><input type="radio" name="c1-q2" value="c"> c) A Shadow Hound (monster).</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Who saved Gabriel?</span><div class="options"><label><input type="radio" name="c1-q3" value="a"> a) A police officer.</label><label><input type="radio" name="c1-q3" value="b"> b) A girl with purple hair and a dagger.</label><label><input type="radio" name="c1-q3" value="c"> c) He saved himself.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Continuous: The neon signs ______ (reflect) on the water.</span><div class="options"><label><input type="radio" name="c1-g1" value="a"> a) reflected</label><label><input type="radio" name="c1-g1" value="b"> b) were reflecting</label><label><input type="radio" name="c1-g1" value="c"> c) was reflecting</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. Pronouns: Gabriel covered ______ face.</span><div class="options"><label><input type="radio" name="c1-g2" value="a"> a) him</label><label><input type="radio" name="c1-g2" value="b"> b) he</label><label><input type="radio" name="c1-g2" value="c"> c) his</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. Modals (Advice): You ______ be out this late.</span><div class="options"><label><input type="radio" name="c1-g3" value="a"> a) shouldn't</label><label><input type="radio" name="c1-g3" value="b"> b) don't have to</label><label><input type="radio" name="c1-g3" value="c"> c) must</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch2">
+            <h1>Chapter 2: The Sanctuary</h1>
+            <div class="story-meta">An Antique Shop in Liberdade • Cozy, Magical, Secretive</div>
+            <div class="story-text">
+                <p>Gabriel couldn't breathe. "What... what was that?" he asked.</p>
+                <p>The girl didn't answer. She grabbed his arm. Her grip was strong. "Not here. It's not safe. Follow me."</p>
+                <p>She pulled him through the rain to the Liberdade district. They stopped in front of an old antique shop full of dusty clocks and lamps. The sign said: <em>Curiosidades Orientais</em>.</p>
+                <p>She touched a symbol on the glass door. It glowed blue. <em>Click.</em> The door opened.</p>
+                <p>Inside, it was warm. The air smelled like old paper and tea. But Gabriel saw strange things: swords on the wall, jars with glowing liquids, and books written in a language he didn't know.</p>
+                <p>"My name is Isabela," the girl said. She took off her leather coat. She had a silver tattoo on her neck. It looked like the symbol on the door.</p>
+                <p>"Isabela... that dog... it was made of smoke," Gabriel stammered.</p>
+                <p>"That was a Scout," Isabela said. She looked at Gabriel with curiosity. "Normal humans cannot see them. They just see a stray dog. But you... you saw the smoke. You saw the eyes."</p>
+                <p>She stepped closer to him. Gabriel felt a strange electricity.</p>
+                <p>"Who are you, Gabriel?" she whispered. "And why do you have the Sight?"</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">Grip</span> <span>(Noun) The way you hold something tightly.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Antique</span> <span>(Adjective) Very old and valuable.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Dusty</span> <span>(Adjective) Covered in dust (not clean).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Jar</span> <span>(Noun) A glass container for food or liquids.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Liquid</span> <span>(Noun) Something that flows like water (not solid).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Stray</span> <span>(Adjective) Homeless; without a home (usually for animals).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Stammer</span> <span>(Verb) To speak with difficulty because of fear or nervousness.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="c"><span class="q-title">1. Where did Isabela take Gabriel?</span><div class="options"><label><input type="radio" name="c2-q1" value="a"> a) To a hospital.</label><label><input type="radio" name="c2-q1" value="b"> b) To a police station.</label><label><input type="radio" name="c2-q1" value="c"> c) To an antique shop in Liberdade.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. How did Isabela open the door?</span><div class="options"><label><input type="radio" name="c2-q2" value="a"> a) With a metal key.</label><label><input type="radio" name="c2-q2" value="b"> b) She touched a magic symbol.</label><label><input type="radio" name="c2-q2" value="c"> c) She kicked it open.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Why was Isabela surprised?</span><div class="options"><label><input type="radio" name="c2-q3" value="a"> a) Because Gabriel was wet.</label><label><input type="radio" name="c2-q3" value="b"> b) Because Gabriel could see the monster's true form.</label><label><input type="radio" name="c2-q3" value="c"> c) Because Gabriel had a camera.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Modals (Ability): Normal humans ______ see the monsters.</span><div class="options"><label><input type="radio" name="c2-g1" value="a"> a) can</label><label><input type="radio" name="c2-g1" value="b"> b) cannot</label><label><input type="radio" name="c2-g1" value="c"> c) must</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Adjectives: The shop was full of ______ clocks.</span><div class="options"><label><input type="radio" name="c2-g2" value="a"> a) dust</label><label><input type="radio" name="c2-g2" value="b"> b) dusty</label><label><input type="radio" name="c2-g2" value="c"> c) dusted</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Past Simple: She ______ (take) off her coat.</span><div class="options"><label><input type="radio" name="c2-g3" value="a"> a) taked</label><label><input type="radio" name="c2-g3" value="b"> b) took</label><label><input type="radio" name="c2-g3" value="c"> c) taken</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch3">
+            <h1>Chapter 3: The Refusal</h1>
+            <div class="story-meta">Inside the Shop / The Training Room • Tense, Romantic tension, Denial</div>
+            <div class="story-text">
+                <p>"I am just a student!" Gabriel shouted. "I study architecture. I take photos. I don't want to be part of your magic club!"</p>
+                <p>He turned to the door. He wanted to leave. This was too crazy.</p>
+                <p>"You can leave," Isabela said quietly. She was cleaning her silver dagger with a cloth. "But the monsters know your scent now. They know you can see them. They will hunt you."</p>
+                <p>Gabriel stopped. He remembered the yellow eyes. He shivered.</p>
+                <p>"What are you?" Gabriel asked.</p>
+                <p>"I am a Warden. We protect the city," she said. She looked tired. For a second, she didn't look like a warrior. She just looked like a lonely girl.</p>
+                <p>Gabriel looked at her—really looked at her. She was beautiful, but dangerous. Like a storm.</p>
+                <p>"If I stay..." Gabriel said, stepping closer. "Will you teach me?"</p>
+                <p>Isabela looked up. Her dark eyes met his. The air in the room felt heavy and hot.</p>
+                <p>"I can teach you to run," she said. "I can teach you to hide. But I don't know if you can fight. The Midnight Guard is not a game, Gabriel. People die."</p>
+                <p>"I don't want to die," Gabriel said. "But I don't want to be blind anymore."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Shout</span> <span>(Verb) To speak very loudly (yell).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Scent</span> <span>(Noun) A smell (usually of a person or animal).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Hunt</span> <span>(Verb) To chase and try to catch/kill.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Shiver</span> <span>(Verb) To shake slightly because you are cold or frightened.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Warrior</span> <span>(Noun) A skilled fighter.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Lonely</span> <span>(Adjective) Sad because you have no friends or company.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Blind</span> <span>(Adjective) Unable to see.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Why does Gabriel want to leave?</span><div class="options"><label><input type="radio" name="c3-q1" value="a"> a) He is bored.</label><label><input type="radio" name="c3-q1" value="b"> b) He thinks the situation is crazy and he is scared.</label><label><input type="radio" name="c3-q1" value="c"> c) He has a class.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Why is it dangerous for Gabriel to leave?</span><div class="options"><label><input type="radio" name="c3-q2" value="a"> a) It is raining.</label><label><input type="radio" name="c3-q2" value="b"> b) The monsters know his scent and will hunt him.</label><label><input type="radio" name="c3-q2" value="c"> c) He lost his wallet.</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. What does Gabriel agree to do at the end?</span><div class="options"><label><input type="radio" name="c3-q3" value="a"> a) To stay and learn.</label><label><input type="radio" name="c3-q3" value="b"> b) To call the police.</label><label><input type="radio" name="c3-q3" value="c"> c) To go home and sleep.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Conditionals (First): If I stay, ______ you teach me?</span><div class="options"><label><input type="radio" name="c3-g1" value="a"> a) did</label><label><input type="radio" name="c3-g1" value="b"> b) will</label><label><input type="radio" name="c3-g1" value="c"> c) do</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Infinitive: I don't want ______ (die).</span><div class="options"><label><input type="radio" name="c3-g2" value="a"> a) die</label><label><input type="radio" name="c3-g2" value="b"> b) to die</label><label><input type="radio" name="c3-g2" value="c"> c) dying</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Object Pronouns: The monsters will hunt ______.</span><div class="options"><label><input type="radio" name="c3-g3" value="a"> a) your</label><label><input type="radio" name="c3-g3" value="b"> b) you</label><label><input type="radio" name="c3-g3" value="c"> c) yours</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch4">
+            <h1>Chapter 4: The Stolen Key</h1>
+            <div class="story-meta">The Underground Base / Map Room • Investigative, Urgent</div>
+            <div class="story-text">
+                <p>The next evening, Gabriel returned to the shop. Isabela opened a secret door behind a bookshelf. Downstairs, there was a modern room with computers and maps of São Paulo glowing on the walls.</p>
+                <p>An older man was there. He had white hair and a scar on his face. This was <strong>Commander Silas</strong>.</p>
+                <p>"Is this the boy with the Sight?" Silas asked. His voice was rough.</p>
+                <p>"Yes, Commander," Isabela said. "His name is Gabriel."</p>
+                <p>Silas looked at a digital map. A red light was blinking on Avenida Paulista.</p>
+                <p>"We have a problem," Silas said. "Last night, someone broke into the MASP museum. They didn't steal a painting. They stole the <span class="highlight">Obsidian Key</span>."</p>
+                <p>"The Obsidian Key?" Isabela gasped. She looked pale. "But that key opens the..."</p>
+                <p>"Yes," Silas interrupted. "It opens the Tomb of the First Monster. If they use it, the Barrier will break completely."</p>
+                <p>Isabela looked at Gabriel. "We have to go. Now."</p>
+                <p>"Me?" Gabriel asked.</p>
+                <p>"You know the city," Isabela said, handing him a flashlight. It was heavy and made of silver. "And you have eyes that see the truth. We need you."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">Bookshelf</span> <span>(Noun) Furniture for holding books.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Scar</span> <span>(Noun) A mark left on the skin after a cut heals.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Rough</span> <span>(Adjective) Not soft; harsh (used for voices or surfaces).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Blink</span> <span>(Verb) To flash on and off (like a light).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Break into</span> <span>(Verb) To enter a place illegally/by force.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Tomb</span> <span>(Noun) A place where a dead person (or monster) is buried.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Flashlight</span> <span>(Noun) A small electric light you carry in your hand.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Where was the secret base?</span><div class="options"><label><input type="radio" name="c4-q1" value="a"> a) In the attic.</label><label><input type="radio" name="c4-q1" value="b"> b) Behind a bookshelf downstairs.</label><label><input type="radio" name="c4-q1" value="c"> c) At the museum.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. What was stolen from the museum (MASP)?</span><div class="options"><label><input type="radio" name="c4-q2" value="a"> a) A famous painting.</label><label><input type="radio" name="c4-q2" value="b"> b) Money.</label><label><input type="radio" name="c4-q2" value="c"> c) The Obsidian Key.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Why is the Key dangerous?</span><div class="options"><label><input type="radio" name="c4-q3" value="a"> a) It opens a bank vault.</label><label><input type="radio" name="c4-q3" value="b"> b) It opens the Tomb of the First Monster.</label><label><input type="radio" name="c4-q3" value="c"> c) It is made of poison.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Simple: Someone ______ (break) into the museum.</span><div class="options"><label><input type="radio" name="c4-g1" value="a"> a) breaked</label><label><input type="radio" name="c4-g1" value="b"> b) broke</label><label><input type="radio" name="c4-g1" value="c"> c) broken</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">2. Present Perfect: Something terrible ______ (happen).</span><div class="options"><label><input type="radio" name="c4-g2" value="a"> a) has happened</label><label><input type="radio" name="c4-g2" value="b"> b) have happened</label><label><input type="radio" name="c4-g2" value="c"> c) happen</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Imperative: ______ (hand) him the flashlight.</span><div class="options"><label><input type="radio" name="c4-g3" value="a"> a) Handing</label><label><input type="radio" name="c4-g3" value="b"> b) Hand</label><label><input type="radio" name="c4-g3" value="c"> c) Hands</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch5">
+            <h1>Chapter 5: Ambush at Ibirapuera</h1>
+            <div class="story-meta">Ibirapuera Park (Night) • Action, Fast-paced, Magic</div>
+            <div class="story-text">
+                <p>They drove a black motorcycle to Ibirapuera Park. At night, the park was dark and silent. The trees looked like skeletons.</p>
+                <p>"The tracker says the Key is here," Isabela whispered. She pulled out her silver sword. The Runes on the blade glowed blue.</p>
+                <p>"Stay behind me," she told Gabriel.</p>
+                <p>They walked to the lake. Suddenly, the water started to bubble.</p>
+                <p>"Isabela!" Gabriel shouted. "Look!"</p>
+                <p>He pointed to the trees. He didn't see a person. He saw a <strong>distortion</strong> in the air—like heat on a road.</p>
+                <p>"It's a Trap!" Isabela yelled.</p>
+                <p>Three figures jumped from the trees. They were <strong>Goblins</strong>, small but fast, with green skin and sharp teeth. They attacked Isabela.</p>
+                <p><em>Clang!</em> Her sword hit their knives. sparks flew.</p>
+                <p>One Goblin saw Gabriel. It laughed and ran towards him. Gabriel didn't have a sword. He only had his silver flashlight.</p>
+                <p>The Goblin jumped. Gabriel didn't think. He shined the flashlight directly into the Goblin's eyes.</p>
+                <p><em>ZAP!</em></p>
+                <p>The light from the silver flashlight burned the Goblin. It screamed and covered its eyes. Gabriel kicked it into the lake.</p>
+                <p>Isabela finished the other two monsters. She looked at Gabriel, breathing hard. She smiled. It was a real smile this time.</p>
+                <p>"Not bad, Architectural Student," she said. "Not bad at all."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">Skeleton</span> <span>(Noun) The bone structure of a body (here, referring to leafless trees).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Blade</span> <span>(Noun) The sharp metal part of a sword or knife.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Bubble</span> <span>(Verb) When balls of air rise to the surface of water.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Distortion</span> <span>(Noun) When something looks twisted or unclear.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Trap</span> <span>(Noun) A plan to trick or catch someone.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Sparks</span> <span>(Noun) Small fiery particles thrown off by a fire or metal hitting metal.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Shine</span> <span>(Verb) To point a light at something (Past: Shined/Shone).</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What did the trees look like?</span><div class="options"><label><input type="radio" name="c5-q1" value="a"> a) Like giant monsters.</label><label><input type="radio" name="c5-q1" value="b"> b) Like skeletons.</label><label><input type="radio" name="c5-q1" value="c"> c) Like flowers.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. How did Gabriel know the enemy was there?</span><div class="options"><label><input type="radio" name="c5-q2" value="a"> a) He heard them.</label><label><input type="radio" name="c5-q2" value="b"> b) He saw a distortion in the air.</label><label><input type="radio" name="c5-q2" value="c"> c) Isabela told him.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">3. How did Gabriel fight the Goblin?</span><div class="options"><label><input type="radio" name="c5-q3" value="a"> a) He used a sword.</label><label><input type="radio" name="c5-q3" value="b"> b) He used magic.</label><label><input type="radio" name="c5-q3" value="c"> c) He used his silver flashlight and kicked it.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Simple (Irregular): Sparks ______ (fly).</span><div class="options"><label><input type="radio" name="c5-g1" value="a"> a) flied</label><label><input type="radio" name="c5-g1" value="b"> b) flew</label><label><input type="radio" name="c5-g1" value="c"> c) flown</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">2. Adverbs: She breathed ______.</span><div class="options"><label><input type="radio" name="c5-g2" value="a"> a) hard</label><label><input type="radio" name="c5-g2" value="b"> b) hardly</label><label><input type="radio" name="c5-g2" value="c"> c) harder</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Prepositions: He kicked it ______ the lake.</span><div class="options"><label><input type="radio" name="c5-g3" value="a"> a) on</label><label><input type="radio" name="c5-g3" value="b"> b) into</label><label><input type="radio" name="c5-g3" value="c"> c) at</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch6">
+            <h1>Chapter 6: The Secret History</h1>
+            <div class="story-meta">A Safehouse / Cafe in Vila Madalena • Quiet, Explanatory, Building Connection</div>
+            <div class="story-text">
+                <p>After the fight, they needed to rest. They went to a small, quiet café in Vila Madalena. It was late, and they were the only customers.</p>
+                <p>Gabriel drank hot coffee. His hands were shaking. "I fought a Goblin," he said, staring at the cup. "I actually fought a Goblin."</p>
+                <p>Isabela smiled gently. "You were brave. Most people freeze."</p>
+                <p>She opened an old leather book on the table. It had drawings of the city from 100 years ago.</p>
+                <p>"The Obsidian Key opens the Tomb," she explained. "The Tomb is not just a grave. It is a prison. Inside is the <strong>Shadow King</strong>. If he wakes up, the Barrier will fall. Every monster in the dark dimension will enter São Paulo."</p>
+                <p>Gabriel looked at her. "Why do you do this, Isabela? You could have a normal life."</p>
+                <p>Isabela looked out the window at the rain. "My father was a Warden. He died protecting this city. I promised him I would finish his work."</p>
+                <p>Gabriel reached across the table and touched her hand. Her skin was cold, but his touch warmed her.</p>
+                <p>"You don't have to do it alone," Gabriel said.</p>
+                <p>For a moment, the war didn't exist. There was only the rain, the coffee, and the electricity between them.</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Shake</span> <span>(Verb) To move quickly up and down (from fear or cold).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Stare</span> <span>(Verb) To look at something for a long time without moving your eyes.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Grave</span> <span>(Noun) A place where a dead body is buried.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Prison</span> <span>(Noun) A building where criminals are kept locked up.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Promise</span> <span>(Verb) To say you will definitely do something.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Reach</span> <span>(Verb) To stretch your arm to touch something.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Electricity</span> <span>(Noun) Power/Energy (here, a romantic feeling).</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Where did they go after the fight?</span><div class="options"><label><input type="radio" name="c6-q1" value="a"> a) To a hospital.</label><label><input type="radio" name="c6-q1" value="b"> b) To a café in Vila Madalena.</label><label><input type="radio" name="c6-q1" value="c"> c) To the police.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Who is inside the Tomb?</span><div class="options"><label><input type="radio" name="c6-q2" value="a"> a) Isabela's father.</label><label><input type="radio" name="c6-q2" value="b"> b) The Shadow King.</label><label><input type="radio" name="c6-q2" value="c"> c) A dragon.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Why does Isabela fight?</span><div class="options"><label><input type="radio" name="c6-q3" value="a"> a) For money.</label><label><input type="radio" name="c6-q3" value="b"> b) Because she promised her father.</label><label><input type="radio" name="c6-q3" value="c"> c) Because she likes violence.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Continuous: His hands ______ (shake).</span><div class="options"><label><input type="radio" name="c6-g1" value="a"> a) is shaking</label><label><input type="radio" name="c6-g1" value="b"> b) were shaking</label><label><input type="radio" name="c6-g1" value="c"> c) shook</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">2. Reflexive Pronouns: You don't have to do it by ______.</span><div class="options"><label><input type="radio" name="c6-g2" value="a"> a) yourself</label><label><input type="radio" name="c6-g2" value="b"> b) you</label><label><input type="radio" name="c6-g2" value="c"> c) yours</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Infinitive: She promised ______ (finish) the work.</span><div class="options"><label><input type="radio" name="c6-g3" value="a"> a) finish</label><label><input type="radio" name="c6-g3" value="b"> b) to finish</label><label><input type="radio" name="c6-g3" value="c"> c) finishing</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch7">
+            <h1>Chapter 7: The Traitor</h1>
+            <div class="story-meta">The Underground Base • Shocking, Betrayal</div>
+            <div class="story-text">
+                <p>They returned to the base to tell Commander Silas about the Goblins. But when they entered the Map Room, something was wrong.</p>
+                <p>The computers were smashed. The maps were dark. Commander Silas was standing in the middle of the room, holding a silver gun. But he wasn't pointing it at the door. He was pointing it at <strong>Isabela</strong>.</p>
+                <p>"Silas?" Isabela asked. "What are you doing?"</p>
+                <p>"I am sorry, Isabela," Silas said. His voice was cold. "The Shadow King promised me power. He promised to heal my scars. I am tired of fighting. I want to be on the winning side."</p>
+                <p>Gabriel saw something in Silas's pocket. It was the <strong>Obsidian Key</strong>.</p>
+                <p>"You stole it!" Gabriel shouted. "You stole the Key from the museum!"</p>
+                <p>"You are smart, boy," Silas laughed. "But you are too late. The ritual starts tonight at midnight."</p>
+                <p>Silas fired the gun. <em>BANG!</em></p>
+                <p>The bullet hit a gas pipe next to them. Smoke filled the room. Silas ran to the elevator and locked the doors. He left them trapped in the smoke.</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Smash</span> <span>(Verb) To break something into many pieces violently.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Heal</span> <span>(Verb) To become healthy again; to cure.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Winning side</span> <span>(Noun Phrase) The team that is going to win.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Shout</span> <span>(Verb) To speak very loudly.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Ritual</span> <span>(Noun) A religious or magical ceremony.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Bullet</span> <span>(Noun) The metal piece shot from a gun.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Pipe</span> <span>(Noun) A tube for carrying water or gas.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="c"><span class="q-title">1. Who is the traitor?</span><div class="options"><label><input type="radio" name="c7-q1" value="a"> a) Gabriel.</label><label><input type="radio" name="c7-q1" value="b"> b) Isabela.</label><label><input type="radio" name="c7-q1" value="c"> c) Commander Silas.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. What did the Shadow King promise Silas?</span><div class="options"><label><input type="radio" name="c7-q2" value="a"> a) Money and a car.</label><label><input type="radio" name="c7-q2" value="b"> b) Power and to heal his scars.</label><label><input type="radio" name="c7-q2" value="c"> c) A vacation.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. How did Silas escape?</span><div class="options"><label><input type="radio" name="c7-q3" value="a"> a) He used magic.</label><label><input type="radio" name="c7-q3" value="b"> b) He ran to the elevator and locked it.</label><label><input type="radio" name="c7-q3" value="c"> c) He jumped out the window.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Continuous: He ______ (point) the gun at Isabela.</span><div class="options"><label><input type="radio" name="c7-g1" value="a"> a) points</label><label><input type="radio" name="c7-g1" value="b"> b) was pointing</label><label><input type="radio" name="c7-g1" value="c"> c) pointed</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">2. Adjectives: I am ______ of fighting.</span><div class="options"><label><input type="radio" name="c7-g2" value="a"> a) tired</label><label><input type="radio" name="c7-g2" value="b"> b) tiring</label><label><input type="radio" name="c7-g2" value="c"> c) tire</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Prepositions: He pointed the gun ______ her.</span><div class="options"><label><input type="radio" name="c7-g3" value="a"> a) to</label><label><input type="radio" name="c7-g3" value="b"> b) at</label><label><input type="radio" name="c7-g3" value="c"> c) on</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch8">
+            <h1>Chapter 8: The Race to the Tomb</h1>
+            <div class="story-meta">The Streets / A Stolen Motorcycle • Fast, Desperate</div>
+            <div class="story-text">
+                <p>Gabriel coughed in the smoke. "Isabela! Are you okay?"</p>
+                <p>"I'm fine!" she yelled. She used her sword to break the ventilation cover. "We have to climb out!"</p>
+                <p>They climbed through the air vents and came out on the street. It was still raining.</p>
+                <p>"Where is the Tomb?" Gabriel asked. "Silas said the ritual is at midnight. We have 20 minutes!"</p>
+                <p>Isabela looked at the city lights. "The old legends say the Tomb is under the <strong>Sé Cathedral</strong>. It is the center of the city."</p>
+                <p>They saw a motorcycle parked nearby. Isabela didn't ask for permission. She jumped on it and started the engine.</p>
+                <p>"Get on!" she shouted.</p>
+                <p>Gabriel jumped on the back and held her waist tightly. They drove fast through the traffic. The wind and rain hit their faces.</p>
+                <p>"If Silas opens the Tomb," Isabela shouted over the wind, "The Barrier will break. We have to stop him, Gabriel. Even if we die."</p>
+                <p>Gabriel held her tighter. "We won't die tonight."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Cough</span> <span>(Verb) To push air from lungs with a loud noise.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Ventilation/Vent</span> <span>(Noun) A system (pipes/holes) to let fresh air in.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Climb</span> <span>(Verb) To go up or down using your hands and feet.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Cathedral</span> <span>(Noun) A very large and important church.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Center</span> <span>(Noun) The middle point.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Permission</span> <span>(Noun) Allowing someone to do something.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Engine</span> <span>(Noun) The machine that makes a car or bike move.</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. How did they escape the base?</span><div class="options"><label><input type="radio" name="c8-q1" value="a"> a) Through the front door.</label><label><input type="radio" name="c8-q1" value="b"> b) Through the air vents.</label><label><input type="radio" name="c8-q1" value="c"> c) They didn't escape.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Where is the Tomb located?</span><div class="options"><label><input type="radio" name="c8-q2" value="a"> a) Under the MASP.</label><label><input type="radio" name="c8-q2" value="b"> b) Under the Sé Cathedral.</label><label><input type="radio" name="c8-q2" value="c"> c) In the park.</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">3. What vehicle did they use?</span><div class="options"><label><input type="radio" name="c8-q3" value="a"> a) A taxi.</label><label><input type="radio" name="c8-q3" value="b"> b) The subway.</label><label><input type="radio" name="c8-q3" value="c"> c) A stolen motorcycle.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="a"><span class="q-title">1. Prepositions: They climbed ______ the vents.</span><div class="options"><label><input type="radio" name="c8-g1" value="a"> a) through</label><label><input type="radio" name="c8-g1" value="b"> b) on</label><label><input type="radio" name="c8-g1" value="c"> c) at</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Adverbs: She started the engine ______.</span><div class="options"><label><input type="radio" name="c8-g2" value="a"> a) quick</label><label><input type="radio" name="c8-g2" value="b"> b) quickly</label><label><input type="radio" name="c8-g2" value="c"> c) quicker</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. Future: We ______ (stop) him.</span><div class="options"><label><input type="radio" name="c8-g3" value="a"> a) have to stop</label><label><input type="radio" name="c8-g3" value="b"> b) stopping</label><label><input type="radio" name="c8-g3" value="c"> c) stopped</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch9">
+            <h1>Chapter 9: The Shadow King</h1>
+            <div class="story-meta">The Crypt under the Cathedral • Dark, Epic, Scary</div>
+            <div class="story-text">
+                <p>They ran into the Cathedral. It was empty. Isabela found a hidden lever behind a statue. The floor opened, revealing stone stairs going down into the darkness.</p>
+                <p>Down in the crypt, the air was freezing. Green fire burned in torches on the walls.</p>
+                <p>In the center of the room, there was a large stone door covered in chains. Silas stood in front of it. He put the Obsidian Key into the lock.</p>
+                <p>"Silas, stop!" Isabela screamed.</p>
+                <p>Silas turned. His eyes were black. He wasn't Silas anymore. The magic had corrupted him.</p>
+                <p>"The King is awake!" Silas yelled. He turned the key.</p>
+                <p><em>CRACK!</em> The stone door broke open.</p>
+                <p>A cloud of black smoke poured out. Two giant red eyes appeared in the smoke. The <strong>Shadow King</strong> stepped out. He was ten feet tall, wearing armor made of bones. He held a sword of black fire.</p>
+                <p>Silas smiled. "My King, I freed you!"</p>
+                <p>The Shadow King looked at Silas. "Thank you," the monster said. Then, he swung his sword. Silas fell to the ground, lifeless.</p>
+                <p>"Traitors are not useful," the King growled. He looked at Gabriel and Isabela. "Now... fresh meat."</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">Lever</span> <span>(Noun) A handle you push or pull to operate a machine.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Crypt</span> <span>(Noun) An underground room under a church (usually for graves).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Torch</span> <span>(Noun) A stick with fire at the end for light.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Chain</span> <span>(Noun) Metal rings connected together.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Corrupt</span> <span>(Verb) To change from good to bad.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Armor</span> <span>(Noun) Metal clothes worn to protect the body in battle.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Swing</span> <span>(Verb) To move something in a curve with force (Past: Swung).</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. What happened to Silas?</span><div class="options"><label><input type="radio" name="c9-q1" value="a"> a) The King gave him a reward.</label><label><input type="radio" name="c9-q1" value="b"> b) The King killed him.</label><label><input type="radio" name="c9-q1" value="c"> c) He ran away.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. What does the Shadow King look like?</span><div class="options"><label><input type="radio" name="c9-q2" value="a"> a) Small and green.</label><label><input type="radio" name="c9-q2" value="b"> b) Giant, with bone armor and a sword of black fire.</label><label><input type="radio" name="c9-q2" value="c"> c) Like a normal human.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Where was the hidden stairs?</span><div class="options"><label><input type="radio" name="c9-q3" value="a"> a) Behind the altar.</label><label><input type="radio" name="c9-q3" value="b"> b) Behind a statue.</label><label><input type="radio" name="c9-q3" value="c"> c) Under the carpet.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Simple (Irregular): He ______ (swing) his sword.</span><div class="options"><label><input type="radio" name="c9-g1" value="a"> a) swinged</label><label><input type="radio" name="c9-g1" value="b"> b) swung</label><label><input type="radio" name="c9-g1" value="c"> c) swang</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. Adjectives: The door was ______ (cover) in chains.</span><div class="options"><label><input type="radio" name="c9-g2" value="a"> a) covering</label><label><input type="radio" name="c9-g2" value="b"> b) covered</label><label><input type="radio" name="c9-g2" value="c"> c) covers</label></div></div>
+                <div class="quiz-question" data-correct="a"><span class="q-title">3. Prepositions: He fell ______ the ground.</span><div class="options"><label><input type="radio" name="c9-g3" value="a"> a) to</label><label><input type="radio" name="c9-g3" value="b"> b) in</label><label><input type="radio" name="c9-g3" value="c"> c) at</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch10">
+            <h1>Chapter 10: The New Warden</h1>
+            <div class="story-meta">The Crypt / The Aftermath • Heroic, Romantic Ending</div>
+            <div class="story-text">
+                <p>The Shadow King raised his black sword. Isabela ran forward. Her silver sword clashed with the black fire.</p>
+                <p><em>CLANG!</em></p>
+                <p>She was fast, but the King was too strong. He hit her, and she flew across the room. She hit the wall and didn't move.</p>
+                <p>"Isabela!" Gabriel screamed.</p>
+                <p>The King laughed and walked towards Gabriel. "You have the Sight, boy. Watch your friend die."</p>
+                <p>Gabriel looked at the Runes on the wall. He remembered what Isabela said: <em>The Barrier is made of light.</em></p>
+                <p>Gabriel grabbed his camera. It had a powerful <strong>Flash</strong>. He modified the settings: <em>Maximum brightness</em>.</p>
+                <p>He ran towards the monster. "Look here!" he shouted.</p>
+                <p>The Shadow King turned. Gabriel jumped and pressed the button.</p>
+                <p><em>CLICK-FLASH!</em></p>
+                <p>An explosion of pure white light filled the dark crypt. It was brighter than the sun. The Shadow King screamed. The light burned his shadow form. He dissolved into nothing.</p>
+                <p>Gabriel ran to Isabela. She opened her eyes weakly.</p>
+                <p>"You..." she whispered. "You killed a King with a camera?"</p>
+                <p>Gabriel smiled and helped her stand up. "Technology has its own magic."</p>
+                <p>They walked out of the cathedral. The sun was rising over São Paulo. The rain had stopped.</p>
+                <p>Isabela took Gabriel's hand. "The city is safe. But there are still monsters out there. We need a new Warden."</p>
+                <p>Gabriel looked at the city he loved. Then he looked at Isabela.</p>
+                <p>"When do we start training?" he asked.</p>
+            </div>
+            <div class="section-box">
+                <h2>Lexicon</h2>
+                <div class="vocab-item"><span class="vocab-word">To Clash</span> <span>(Verb) When metal hits metal with a loud noise.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Raise</span> <span>(Verb) To lift something up.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Flash</span> <span>(Noun) A sudden burst of bright light (on a camera).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Maximum</span> <span>(Adjective) The highest amount possible.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Brightness</span> <span>(Noun) The intensity of light.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Dissolve</span> <span>(Verb) To become liquid or disappear (like sugar in water).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Rise</span> <span>(Verb) To go up (The sun rises).</span></div>
+            </div>
+            <div class="section-box">
+                <h2>Comprehension</h2>
+                <div class="quiz-question" data-correct="c"><span class="q-title">1. How did Gabriel defeat the King?</span><div class="options"><label><input type="radio" name="c10-q1" value="a"> a) With a sword.</label><label><input type="radio" name="c10-q1" value="b"> b) With a gun.</label><label><input type="radio" name="c10-q1" value="c"> c) With his camera flash (light).</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">2. What happened to the Shadow King?</span><div class="options"><label><input type="radio" name="c10-q2" value="a"> a) He ran away.</label><label><input type="radio" name="c10-q2" value="b"> b) He dissolved.</label><label><input type="radio" name="c10-q2" value="c"> c) He ate Gabriel.</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. What is Gabriel's decision at the end?</span><div class="options"><label><input type="radio" name="c10-q3" value="a"> a) To go back to school and forget everything.</label><label><input type="radio" name="c10-q3" value="b"> b) To become a Warden and train with Isabela.</label><label><input type="radio" name="c10-q3" value="c"> c) To move to another city.</label></div></div>
+            </div>
+            <div class="section-box">
+                <h2>Grammar Check</h2>
+                <div class="quiz-question" data-correct="b"><span class="q-title">1. Past Simple: The sun ______ (rise).</span><div class="options"><label><input type="radio" name="c10-g1" value="a"> a) rised</label><label><input type="radio" name="c10-g1" value="b"> b) rose</label><label><input type="radio" name="c10-g1" value="c"> c) risen</label></div></div>
+                <div class="quiz-question" data-correct="c"><span class="q-title">2. Comparatives: It was ______ (bright) than the sun.</span><div class="options"><label><input type="radio" name="c10-g2" value="a"> a) bright</label><label><input type="radio" name="c10-g2" value="b"> b) brightest</label><label><input type="radio" name="c10-g2" value="c"> c) brighter</label></div></div>
+                <div class="quiz-question" data-correct="b"><span class="q-title">3. Adverbs: She opened her eyes ______.</span><div class="options"><label><input type="radio" name="c10-g3" value="a"> a) weak</label><label><input type="radio" name="c10-g3" value="b"> b) weakly</label><label><input type="radio" name="c10-g3" value="c"> c) weakness</label></div></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="finish">
+            <div style="text-align: center; padding-top: 4rem;">
+                <h1 style="font-size: 3rem;">THE END</h1>
+                <p style="color: var(--muted); margin-bottom: 2rem;">You have completed the story.</p>
+                <div style="font-size: 5rem; margin-bottom: 2rem;">📸⚔️</div>
+                <p>Teacher Alex is proud of your bravery.</p>
+                <br><br>
+                <button class="nav-btn" onclick="location.reload()">READ AGAIN</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="nav-footer">
+        <button class="nav-btn" id="prevBtn" onclick="changeChapter(-1)" disabled>PREV</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeChapter(1)">NEXT</button>
+    </footer>
+
+    <script>
+        // Updated Chapter List
+        const chapters = ['cover', 'prologue', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9', 'ch10', 'finish'];
+        let currentIndex = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateUI() {
+            prevBtn.disabled = currentIndex === 0;
+            
+            // Smart Button Logic
+            if (currentIndex === 0) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'none';
+            } else if (currentIndex === chapters.length - 1) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                prevBtn.style.display = 'block';
+            }
+
+            document.querySelectorAll('.chapter').forEach(el => el.classList.remove('active'));
+            document.getElementById(chapters[currentIndex]).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function changeChapter(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= chapters.length) currentIndex = chapters.length - 1;
+            updateUI();
+        }
+
+        // Quiz Logic
+        document.querySelectorAll('.quiz-question').forEach(question => {
+            const inputs = question.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    const selectedValue = input.value;
+                    const correctAnswer = question.getAttribute('data-correct');
+                    const parentLabel = input.parentElement;
+                    question.querySelectorAll('label').forEach(l => l.classList.remove('correct', 'wrong'));
+                    if (selectedValue === correctAnswer) parentLabel.classList.add('correct');
+                    else parentLabel.classList.add('wrong');
+                });
+            });
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
