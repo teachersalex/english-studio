@@ -613,14 +613,46 @@
         </div>
 
         <div class="chapter" id="finish">
-            <div style="text-align: center; padding-top: 4rem;">
-                <h1 style="font-size: 3rem;">MISSION COMPLETE</h1>
-                <p style="color: var(--text-muted); margin-bottom: 2rem;">Funding Secured.</p>
-                <div style="font-size: 5rem; margin-bottom: 2rem;">🚀💰</div>
-                <p>Teacher Alex is proud of your business skills.</p>
-                <br><br>
-                <button class="nav-btn" onclick="location.reload()">RESTART</button>
+            <div style="text-align: center; padding-top: 3rem;">
+                
+                <h1 style="font-size: 3.5rem; margin-bottom: 0.5rem; color: var(--success);">MISSION ACCOMPLISHED</h1>
+                
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
+                    Funding Secured. The future is electric.
+                </p>
+                
+                <div style="font-size: 6rem; margin-bottom: 2rem; filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.4));">
+                    🤝🚀
+                </div>
+                
+                <p style="font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; color: var(--text-main); margin-bottom: 3rem;">
+                    "Teacher Alex is incredibly proud of your performance."
+                </p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; max-width: 300px; margin: 0 auto;">
+                    
+                    <button class="nav-btn" onclick="sendReport()" style="border-color: #25D366; color: #25D366; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <span>📱</span> SEND REPORT TO ALEX
+                    </button>
+
+                    <button class="nav-btn" onclick="location.reload()" style="border-color: var(--text-muted); color: var(--text-muted); width: 100%; opacity: 0.7;">
+                        REPLAY SIMULATION
+                    </button>
+
+                </div>
             </div>
+
+            <script>
+                function sendReport() {
+                    // REPLACE WITH YOUR NUMBER
+                    const phoneNumber = "5537999281560"; 
+                    
+                    const message = "Teacher Alex! 🚀 I just finished 'The Startup Pitch'. Mission Accomplished. I am ready for the next challenge!";
+                    
+                    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(url, '_blank');
+                }
+            </script>
         </div>
 
     </main>
