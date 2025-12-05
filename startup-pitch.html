@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Startup Pitch | Teacher Alex</title>
+    
+    <meta property="og:title" content="The Startup Pitch | Business Reader">
+    <meta property="og:description" content="High stakes in São Paulo. Master business English with this interactive story.">
+    <meta property="og:image" content="https://teachersalex.github.io/english-studio/startup-cover.jpg"> 
+    <meta property="og:url" content="https://teachersalex.github.io/english-studio/startup-pitch.html">
+    <meta name="theme-color" content="#fbbf24">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* VOLT RACING PALETTE */
+            --bg-void: #0b0f19;       /* Deepest Carbon */
+            --bg-panel: #151b2b;      /* Panel Grey */
+            
+            --volt-amber: #fbbf24;    /* Warning/Energy Gold */
+            --volt-orange: #f59e0b;   /* Darker Amber */
+            
+            --text-main: #f1f5f9;     /* Titanium White */
+            --text-muted: #94a3b8;    /* Technical Grey */
+            
+            --success: #10b981;       /* System Optimal Green */
+            --error: #ef4444;         /* Critical Failure Red */
+            
+            --tech-border: 1px solid rgba(251, 191, 36, 0.2);
+            --tech-glow: 0 0 15px rgba(251, 191, 36, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* subtle grid pattern for engineering vibe */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            padding-bottom: 100px;
+        }
+
+        /* --- Telemetry Header --- */
+        header {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: var(--tech-border);
+            background: rgba(11, 15, 25, 0.95);
+            backdrop-filter: blur(5px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        
+        .back-btn { 
+            text-decoration: none; color: var(--text-muted); font-size: 1.2rem; transition: 0.3s; 
+            border: var(--tech-border); width: 35px; height: 35px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-family: 'Rajdhani', sans-serif; font-weight: 700;
+        }
+        .back-btn:hover { color: var(--bg-void); background: var(--volt-amber); box-shadow: var(--tech-glow); }
+
+        .brand { 
+            font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--volt-amber); 
+            letter-spacing: 2px; font-size: 1.1rem; text-transform: uppercase;
+        }
+
+        .status-light {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+            box-shadow: 0 0 8px var(--success); display: inline-block; margin-left: 10px;
+        }
+
+        /* --- Main Console --- */
+        main { max-width: 750px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+        .chapter { display: none; animation: slideIn 0.5s ease-out; }
+        .chapter.active { display: block; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- Tech Typography --- */
+        h1 {
+            font-family: 'Rajdhani', sans-serif; font-size: 2.5rem; text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, #fbbf24); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; margin-bottom: 0.2rem; letter-spacing: 1px;
+        }
+
+        h2 { 
+            font-family: 'Rajdhani', sans-serif; font-size: 1rem; color: var(--volt-amber); 
+            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; 
+            border-left: 3px solid var(--volt-amber); padding-left: 1rem;
+        }
+
+        .story-text { font-size: 1.1rem; color: #cbd5e1; margin-bottom: 3rem; text-align: justify; }
+        .story-text p { margin-bottom: 1.5rem; }
+        
+        .highlight { color: var(--volt-amber); font-weight: 600; border-bottom: 1px dashed var(--volt-amber); }
+
+        /* --- Data Modules (Vocab/Quiz) --- */
+        .module {
+            background: var(--bg-panel); border: var(--tech-border); 
+            padding: 2rem; margin-bottom: 2rem; position: relative;
+        }
+        
+        .module::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px;
+            border-top: 2px solid var(--volt-amber); border-left: 2px solid var(--volt-amber);
+        }
+
+        .module-title {
+            font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; color: var(--text-main);
+            margin-bottom: 1.5rem; display: block; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;
+        }
+
+        .vocab-item { 
+            display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-bottom: 12px; 
+            padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: baseline;
+        }
+        .vocab-word { color: var(--volt-amber); font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; }
+        .vocab-def { font-size: 0.95rem; color: var(--text-muted); }
+
+        /* --- Interactive Inputs --- */
+        .q-text { display: block; margin-bottom: 10px; font-weight: 600; color: var(--text-main); }
+        
+        .options label { 
+            display: flex; align-items: center; padding: 12px 15px; margin-bottom: 8px; 
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; transition: 0.2s; font-size: 0.95rem; color: var(--text-muted);
+        }
+        
+        .options label:hover { border-color: var(--volt-amber); color: var(--volt-amber); }
+        
+        input[type="radio"] { display: none; }
+        .options label.correct { border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.05); }
+        .options label.wrong { border-color: var(--error); color: var(--error); background: rgba(239, 68, 68, 0.05); }
+
+        /* --- Control Footer --- */
+        .control-panel { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: rgba(11, 15, 25, 0.95); padding: 1rem; 
+            border-top: var(--tech-border); 
+            display: flex; flex-direction: column; gap: 10px; z-index: 100;
+        }
+
+        .battery-bar {
+            width: 100%; height: 4px; background: #334155; position: absolute; top: 0; left: 0;
+        }
+        .battery-fill {
+            height: 100%; background: var(--volt-amber); width: 0%; transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--volt-amber);
+        }
+
+        .nav-buttons { display: flex; justify-content: center; gap: 20px; }
+
+        button.nav-btn {
+            background: transparent; color: var(--volt-amber); border: 1px solid var(--volt-amber); 
+            padding: 10px 40px; font-family: 'Rajdhani', sans-serif; font-weight: 700; 
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer; 
+            transition: 0.3s; font-size: 1rem;
+        }
+        
+        button.nav-btn:hover { background: var(--volt-amber); color: var(--bg-void); box-shadow: var(--tech-glow); }
+        button.nav-btn:disabled { border-color: #334155; color: #475569; cursor: not-allowed; box-shadow: none; background: transparent; }
+
+        @media (max-width: 600px) { 
+            h1 { font-size: 2rem; } 
+            .vocab-item { grid-template-columns: 1fr; gap: 2px; }
+            .back-btn { border: none; font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="back-btn">&#8592;</a>
+            <div class="brand">VOLT // DYNAMICS <div class="status-light"></div></div>
+        </div>
+        <div style="font-family: 'Rajdhani'; color: var(--text-muted);">SYS.B1</div>
+    </header>
+
+    <main>
+        
+        <div class="chapter active" id="cover">
+            <div style="text-align: center; padding-top: 3rem;">
+                <div style="border: 1px solid var(--volt-amber); display: inline-block; padding: 5px 15px; margin-bottom: 2rem; color: var(--volt-amber); font-family: 'Rajdhani'; letter-spacing: 2px;">PROJECT: VELOCITY</div>
+                
+                <h1 style="font-size: 3.5rem; line-height: 1;">THE STARTUP<br>PITCH</h1>
+                
+                <p style="color: var(--text-muted); margin: 2rem auto; max-width: 400px;">
+                    Innovation. Strategy. High Stakes.<br>
+                    You are <strong>Sofia</strong>. You have 48 hours to save the company.
+                </p>
+                
+                <button class="nav-btn" onclick="changeChapter(1)">INITIALIZE</button>
+            </div>
+        </div>
+
+        <div class="chapter" id="prologue">
+            <h1>Prologue: The Redline</h1>
+            <h2>Interlagos R&D Track • Dusk</h2>
+            <div class="story-text">
+                <p>The air smelled of burnt rubber and ozone. On the track, a matte-black shape blurred past at 280 km/h. It was silent, except for the high-pitched whine of the electric motor.</p>
+                <p>This was the <strong>Volt X-Type</strong>. Not just a motorcycle. A revolution on two wheels.</p>
+                <p>In the control tower, Sofia, the Project Lead, watched the telemetry data on her screens. The numbers were green. Good.</p>
+                <p>"Battery temperature stable," said Marcus, the Lead Engineer. His eyes never left the monitor. "Power output at 95%."</p>
+                <p>On the track, the test rider, Leo, pushed the bike harder into the final corner.</p>
+                <p>Suddenly, a red warning light flashed on Sofia's screen. <strong>CRITICAL ERROR. SYSTEM OVERHEAT.</strong></p>
+                <p>"Abort!" Marcus shouted into the radio. "Leo, abort run! Cut power now!"</p>
+                <p>On the track, the bike wobbled violently. Smoke puffed from the side. Leo wrestled for control, fighting the physics, before stopping just meters from the wall.</p>
+                <p>Silence returned to the track.</p>
+                <p>Sofia stared at the red warning. The biggest demo of their lives, for a group of international investors, was in 48 hours.</p>
+                <p>And their prototype just failed.</p>
+            </div>
+            
+            <div class="module">
+                <span class="module-title">System Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Revolution</span> <span class="vocab-def">Noun: A huge change in the way things are done.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Abort</span> <span class="vocab-def">Verb: To stop a process or mission immediately.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Prototype</span> <span class="vocab-def">Noun: The first model of a new invention.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Stable</span> <span class="vocab-def">Adj: Not changing; safe and steady.</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch1">
+            <h1>Chapter 1: The Post-Mortem</h1>
+            <h2>The Hangar • 1 Hour Later</h2>
+            <div class="story-text">
+                <p>The Volt X-Type sat on a lift in the center of the brightly lit hangar. The panels were removed, revealing the beast's electric heart. The smell of burnt electronics hung in the air.</p>
+                <p>The team stood around it in a serious circle.</p>
+                <p>"Talk to me, Marcus," Sofia said. Her voice was calm. It was the calm of a leader.</p>
+                <p>Marcus ran a hand through his hair. He looked defeated. "It is a <span class="highlight">bottleneck</span> in the power unit. When we go fast, the battery gets too hot. The system shuts down to prevent an explosion."</p>
+                <p>"Can we fix the software?" asked Elena, the Operations Manager.</p>
+                <p>Marcus shook his head. "It's not software. It's hardware. We need a new cooling part. The current one is too weak."</p>
+                <p>Sofia looked at the clock. It was ticking louder than usual. "How long to get the part?"</p>
+                <p>Marcus hesitated. "The <span class="highlight">supplier</span> is in Germany. Standard delivery is two weeks."</p>
+                <p>Sofia didn't blink. "We have 47 hours."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">System Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Post-Mortem</span> <span class="vocab-def">A meeting after a failure to analyze what happened.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Bottleneck</span> <span class="vocab-def">A problem that delays the whole process.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Hardware</span> <span class="vocab-def">The physical parts of a computer or machine.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Supplier</span> <span class="vocab-def">A company that sells parts to other companies.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Diagnostic Check</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. What is the root problem?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c1q1" value="a"> The rider made a mistake.</label>
+                        <label><input type="radio" name="c1q1" value="b"> A hardware part overheats at high speed.</label>
+                        <label><input type="radio" name="c1q1" value="c"> The software has a virus.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch2">
+            <h1>Chapter 2: The Impossible Call</h1>
+            <h2>Sofia's Office • 10:00 PM</h2>
+            <div class="story-text">
+                <p>Sofia was alone in her glass office. She was calling the CEO of the German supplier. It was 3:00 AM in Germany.</p>
+                <p>He answered, his voice angry. "Ja? Who is this?"</p>
+                <p>"Sir, this is Sofia from Volt Dynamics in Brazil. I apologize for the time, but we have a critical situation."</p>
+                <p>She explained the failure. She explained the investors. She explained the risk.</p>
+                <p>"Impossible," the CEO said. "I cannot ship a custom part across the Atlantic in one day. My factory is fully booked."</p>
+                <p>"I am not asking for a favor. I am proposing a partnership," Sofia said, leaning forward. "If you help us secure this investment, Volt Dynamics will make you our <strong>exclusive supplier</strong> for five years. That is a contract worth millions. If we fail tomorrow, you get nothing."</p>
+                <p>Silence. Sofia listened to her own heartbeat. This was <span class="highlight">leverage</span>.</p>
+                <p>Finally, the CEO sighed. "You are a difficult woman, Sofia."</p>
+                <p>"I am a desperate one," she replied.</p>
+                <p>"I have a prototype unit in my lab. It is very expensive. I was saving it for a Formula 1 team."</p>
+                <p>"Name your price," Sofia said.</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Negotiation Terms</span>
+                <div class="vocab-item"><span class="vocab-word">Fully Booked</span> <span class="vocab-def">Completely full; no space available.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Exclusive</span> <span class="vocab-def">Only available to one person or group.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Leverage</span> <span class="vocab-def">Power used to get a result in a negotiation.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Secure</span> <span class="vocab-def">To succeed in getting something.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Grammar: First Conditional</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. If we ______ (fail), we ______ (lose) everything.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c2g1" value="a"> failed / lost</label>
+                        <label><input type="radio" name="c2g1" value="b"> fail / will lose</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch3">
+            <h1>Chapter 3: Logistics and Luck</h1>
+            <h2>Operations Desk • The Next Day, 11:00 AM</h2>
+            <div class="story-text">
+                <p>The hangar was buzzing with nervous energy. The new part was on a plane somewhere over the ocean.</p>
+                <p>Elena was on her third cup of coffee, staring at monitors showing flight paths. She was the queen of <span class="highlight">logistics</span>.</p>
+                <p>"Where is it, Elena?" Marcus paced behind her chair like a caged animal.</p>
+                <p>"It landed in Guarulhos twenty minutes ago," she said, typing fast. "It is stuck in customs. The paperwork is incomplete."</p>
+                <p>"Customs?" Marcus groaned. "That could take days!"</p>
+                <p>"Not today," Elena said. She grabbed her phone. "I used to work at the airport cargo terminal. I am calling in a favor."</p>
+                <p>She spoke rapidly in Portuguese. Her tone was a mix of charm and authority. She hung up.</p>
+                <p>"A courier is grabbing it now. It will be here in two hours. But Marcus..." she turned to the engineer. "The courier is on a motorcycle. In São Paulo traffic. And it looks like rain."</p>
+                <p>Outside the hangar windows, dark clouds were gathering over the city.</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">System Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Logistics</span> <span class="vocab-def">The organization of moving things complexly.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Customs</span> <span class="vocab-def">The place at an airport where goods are checked (Alfândega).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Paperwork</span> <span class="vocab-def">Documents needed for a job.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Courier</span> <span class="vocab-def">A person who transports packages quickly.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Comprehension Check</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. Why is the part delayed?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c3q1" value="a"> The plane crashed.</label>
+                        <label><input type="radio" name="c3q1" value="b"> It is stuck in customs at the airport.</label>
+                        <label><input type="radio" name="c3q1" value="c"> The courier got lost.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch4">
+            <h1>Chapter 4: The Surgery</h1>
+            <h2>The Hangar • 2:30 PM</h2>
+            <div class="story-text">
+                <p>The courier arrived, wet from the rain, holding a small, heavy metal case. It felt like receiving a human heart for a transplant.</p>
+                <p>"Okay team," Sofia said. "We have the part. We have 18 hours until the investors arrive. Marcus, it is your show."</p>
+                <p>The bike was already stripped down. Marcus and his mechanics moved with the precision of a <strong>Pit Crew</strong>. There was no room for error. A dropped screw, a crossed wire, a moment of hesitation – it could all end the dream.</p>
+                <p>"Disconnecting the high-voltage lines," Marcus announced. "Careful. One mistake here and you will fry the system."</p>
+                <p>They lifted the old, burnt unit out.</p>
+                <p>Marcus opened the German case. The new unit was beautiful. Polished copper and aluminum. It looked expensive. It looked fast.</p>
+                <p>"It is slightly bigger," Marcus whispered. "It is not going to fit in the standard chassis."</p>
+                <p>The team froze.</p>
+                <p>"We have to modify the frame," Leo, the test rider, said. He held a metal cutter. "Cut it to fit."</p>
+                <p>"Cut the carbon fiber frame?" Marcus looked horrified. "Are you crazy? It will weaken the structure!"</p>
+                <p>"We don't need it to last ten years, Marcus," Leo said, his eyes intense. "We need it to last for one perfect lap tomorrow."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Technical Terms</span>
+                <div class="vocab-item"><span class="vocab-word">Pit Crew</span> <span class="vocab-def">The mechanics in racing who service a car during a race.</span></div>
+                <div class="vocab-item"><span class="vocab-word">High-voltage</span> <span class="vocab-def">Very powerful electricity.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Chassis</span> <span class="vocab-def">The main structural frame of a vehicle.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Weaken</span> <span class="vocab-def">To make something less strong.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Grammar: Modals of Necessity</span>
+                <div class="quiz-question" data-correct="a">
+                    <span class="q-text">1. "We ______ modify the frame." (No choice)</span>
+                    <div class="options">
+                        <label><input type="radio" name="c4g1" value="a"> have to</label>
+                        <label><input type="radio" name="c4g1" value="b"> should</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch5">
+            <h1>Chapter 5: The All-Nighter</h1>
+            <h2>The Hangar • 3:00 AM</h2>
+            <div class="story-text">
+                <p>The hangar was silent. The floor was covered with empty pizza boxes and energy drink cans. The air was heavy with exhaustion.</p>
+                <p>They were pulling an <span class="highlight">all-nighter</span>.</p>
+                <p>The new part was in. The frame was modified. Now came the hardest part: the code.</p>
+                <p>Marcus sat at a computer, his eyes red. He typed, deleted, typed again.</p>
+                <p>"It is not syncing," he said, his voice frustrated. "The central computer does not recognize the new German part. It still thinks the old unit is there."</p>
+                <p>Sofia walked over and put a hand on his shoulder. "Take a break, Marcus. Walk away for five minutes."</p>
+                <p>"We don't have five minutes!" he snapped. "If this code isn't perfect, the bike won't even turn on."</p>
+                <p>"And if you make a mistake because you are tired, it won't matter anyway," she said firmly. "Go. Five minutes. That is an order."</p>
+                <p>Marcus glared at her, then slumped. He stood up and walked out into the cool night air.</p>
+                <p>Sofia sat in his chair. She wasn't a coder, but she understood logic. She looked at the screen, at the sea of data. Somewhere in there was the key to their future.</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Work Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">All-nighter</span> <span class="vocab-def">Working all night without sleep.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Sync</span> <span class="vocab-def">To make two things work together.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Snap</span> <span class="vocab-def">To speak suddenly in an angry way.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Glare</span> <span class="vocab-def">To look at someone angrily.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Status Check</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. Why is Marcus angry?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c5q1" value="a"> He is hungry.</label>
+                        <label><input type="radio" name="c5q1" value="b"> The software is not recognizing the new part.</label>
+                        <label><input type="radio" name="c5q1" value="c"> Sofia fired him.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch6">
+            <h1>Chapter 6: The Breakthrough</h1>
+            <h2>The Hangar • 5:45 AM</h2>
+            <div class="story-text">
+                <p>Marcus walked back into the hangar. He held two cups of terrible vending machine coffee. He looked at the screen where Sofia was sitting.</p>
+                <p>"Move," he said gently.</p>
+                <p>Sofia stood up. "Did you find the answer?"</p>
+                <p>"No," Marcus said, sitting down. "But I stopped thinking about the problem. And then the answer came to me."</p>
+                <p>He cracked his knuckles. He started typing furiously. <em>Click-clack-click-clack.</em> The sound echoed in the empty room.</p>
+                <p>"The German unit uses a different data protocol," Marcus mumbled. "We don't need to rewrite the whole system. We just need a translator."</p>
+                <p>He wrote a simple script. He pressed <strong>ENTER</strong>.</p>
+                <p>The screen flashed black, then blue. A progress bar appeared. <em>Loading... 99%... 100%.</em></p>
+                <p>Suddenly, the bike lights turned on. <em>Flash.</em> The dashboard lit up: <strong>SYSTEM ONLINE. STATUS: OPTIMAL.</strong></p>
+                <p>"It's alive," Marcus whispered.</p>
+                <p>Elena woke up on the sofa. Leo jumped down from the workbench. They all looked at the bike. Outside the window, the sun was rising. The sky was purple and gold.</p>
+                <p>"We have a bike," Sofia said, smiling for the first time in two days. "Now, we have to sell it."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">System Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">To Mumble</span> <span class="vocab-def">To speak quietly and unclearly.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Protocol</span> <span class="vocab-def">A set of rules for how computers communicate.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Translator</span> <span class="vocab-def">Something that changes one language (or code) into another.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Optimal</span> <span class="vocab-def">The best possible condition.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Grammar: Past Tense</span>
+                <div class="quiz-question" data-correct="a">
+                    <span class="q-text">1. Marcus ______ (type) when the screen ______ (flash).</span>
+                    <div class="options">
+                        <label><input type="radio" name="c6g1" value="a"> was typing / flashed</label>
+                        <label><input type="radio" name="c6g1" value="b"> typed / was flashing</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch7">
+            <h1>Chapter 7: The Dress Rehearsal</h1>
+            <h2>Conference Room • 8:00 AM</h2>
+            <div class="story-text">
+                <p>The hangar was messy, but the Conference Room upstairs was perfect. Clean glass, polished table, cold air conditioning.</p>
+                <p>The team had showered and changed into suits. They looked like different people. They looked professional.</p>
+                <p>"Okay, let's practice," Sofia said. "This is the <strong>Dress Rehearsal</strong>. Daniel, you handle the financials."</p>
+                <p>Daniel, the Finance Manager, stood up. He was shaking slightly. "Our... um... our margins are... good?"</p>
+                <p>Sofia stopped him. "Daniel, look at me. Don't say 'um'. Don't ask questions. State facts. 'Our margins are excellent.' Say it."</p>
+                <p>"Our margins are excellent," Daniel said, stronger.</p>
+                <p>"Good. Investors smell fear," Sofia said. "We are not asking for charity. We are offering them the deal of the century. <span class="highlight">Body language</span> matters. Stand tall. Make eye contact."</p>
+                <p>She looked at her team. They were tired, but they looked sharp.</p>
+                <p>"Remember," Sofia said. "We built the machine. We know it works. The pitch is just a story we tell them about the future."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Business Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Dress Rehearsal</span> <span class="vocab-def">A final practice before the real performance.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Financials</span> <span class="vocab-def">The numbers about money, costs, and profit.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Margins</span> <span class="vocab-def">The difference between the cost to make something and the selling price (Profit).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Charity</span> <span class="vocab-def">Giving money to help people for free.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Body Language</span> <span class="vocab-def">Communication using your hands, posture, and eyes.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Comprehension Check</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. Why did Sofia correct Daniel?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c7q1" value="a"> He was speaking too loudly.</label>
+                        <label><input type="radio" name="c7q1" value="b"> He sounded unsure and nervous.</label>
+                        <label><input type="radio" name="c7q1" value="c"> His numbers were wrong.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch8">
+            <h1>Chapter 8: The Shark Tank</h1>
+            <h2>Conference Room • 10:00 AM</h2>
+            <div class="story-text">
+                <p>The black SUVs arrived. Three men and one woman walked into the building. They wore Italian suits and carried expensive leather bags. These were the Investors. The "Sharks."</p>
+                <p>They sat at the table. They didn't smile.</p>
+                <p>"You have 20 minutes," the Lead Investor said. He checked his gold watch.</p>
+                <p>Sofia stood up. She clicked a remote, and the screen behind her lit up with the Volt Dynamics logo.</p>
+                <p>"Transportation is broken," Sofia began. Her voice was steady. "Gas is expensive. Cities are polluted. Traffic is slow. Volt Dynamics is the answer."</p>
+                <p>She showed the slides. She talked about the market. Daniel stepped up and presented the numbers perfectly. He didn't shake.</p>
+                <p>"That is a nice story," the Lead Investor interrupted. "But hardware is hard. Tesla almost went bankrupt. Why are you different?"</p>
+                <p>"Because we solved the charging problem," Sofia said. "Our bike charges in 15 minutes. We have the technology, and we have the exclusive supply chain."</p>
+                <p>The investor raised an eyebrow. "Show us."</p>
+                <p>Sofia smiled. "Follow me to the track."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Business Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">To Pollute</span> <span class="vocab-def">To make air or water dirty.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Bankruptcy</span> <span class="vocab-def">When a company has no money and closes.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Supply Chain</span> <span class="vocab-def">The network of companies that make and deliver a product.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Interrupt</span> <span class="vocab-def">To speak when someone else is speaking.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Grammar: Present Simple (Facts)</span>
+                <div class="quiz-question" data-correct="a">
+                    <span class="q-text">1. Choose the confident pitch:</span>
+                    <div class="options">
+                        <label><input type="radio" name="c8g1" value="a"> We have the technology.</label>
+                        <label><input type="radio" name="c8g1" value="b"> We might have the technology.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch9">
+            <h1>Chapter 9: The Demo</h1>
+            <h2>The Test Track • 10:30 AM</h2>
+            <div class="story-text">
+                <p>The group stood on the balcony overlooking the track.</p>
+                <p>Down below, Leo sat on the Volt X-Type. He wore his black helmet. The bike looked like a panther waiting to jump.</p>
+                <p>"Go," Marcus whispered into his radio.</p>
+                <p>Leo twisted the throttle.</p>
+                <p>There was no noise. Just a <em>whoosh</em> of air. The bike shot forward like a bullet. 0 to 100 km/h in 2.8 seconds.</p>
+                <p>The investors gasped.</p>
+                <p>Leo leaned into the corner, his knee almost touching the ground. The bike was stable. The new frame held perfectly. The cooling system kept the battery in the green zone.</p>
+                <p>He did three laps. Fast. Aggressive. Perfect.</p>
+                <p>He stopped in front of the balcony and took off his helmet. He was sweating, but he was grinning.</p>
+                <p>The Lead Investor looked down at the bike, then at Sofia. The silence stretched for ten seconds.</p>
+                <p>"That," the investor said, "is a very fast machine."</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Action Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Balcony</span> <span class="vocab-def">An area with a wall/rail upstairs to look down.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Throttle</span> <span class="vocab-def">The handle you turn to make a motorcycle go.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Gasp</span> <span class="vocab-def">To take a short, quick breath (surprise).</span></div>
+                <div class="vocab-item"><span class="vocab-word">Aggressive</span> <span class="vocab-def">Powerful and forceful (in a good way here).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Grin</span> <span class="vocab-def">To smile widely.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Comprehension Check</span>
+                <div class="quiz-question" data-correct="c">
+                    <span class="q-text">1. How did the bike perform?</span>
+                    <div class="options">
+                        <label><input type="radio" name="c9q1" value="a"> It broke down.</label>
+                        <label><input type="radio" name="c9q1" value="b"> It was slow but safe.</label>
+                        <label><input type="radio" name="c9q1" value="c"> It was fast, silent, and perfect.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch10">
+            <h1>Chapter 10: The Term Sheet</h1>
+            <h2>Sofia's Office • 12:00 PM</h2>
+            <div class="story-text">
+                <p>The papers were on the table. It was a <strong>Term Sheet</strong>. A document outlining the investment deal.</p>
+                <p>"5 Million Dollars," the Lead Investor said. "For 20% equity in the company."</p>
+                <p>It was a tough deal, but fair. It meant Volt Dynamics could build a factory. They could hire more engineers. They could launch the product.</p>
+                <p>Sofia looked at Marcus, Elena, and Daniel. They nodded.</p>
+                <p>Sofia signed the paper.</p>
+                <p>"We have a deal," she said, shaking the investor's hand.</p>
+                <p>After the cars left, Jaqueline opened a bottle of champagne (cheap champagne, bought from the gas station, but it tasted like victory).</p>
+                <p>"To the bottleneck!" Marcus toasted, raising his plastic cup.</p>
+                <p>"To the all-nighter!" Elena laughed.</p>
+                <p>"To the future," Sofia said. She took a sip. She was exhausted. She hadn't slept in 40 hours. But she felt electric.</p>
+                <p>The real work was just starting. But tonight, they had won the race.</p>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Business Vocabulary</span>
+                <div class="vocab-item"><span class="vocab-word">Term Sheet</span> <span class="vocab-def">A document with the details of an investment.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Equity</span> <span class="vocab-def">A percentage of ownership in a company (shares).</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Hire</span> <span class="vocab-def">To give someone a job.</span></div>
+                <div class="vocab-item"><span class="vocab-word">To Toast</span> <span class="vocab-def">To raise a glass and drink to celebrate.</span></div>
+                <div class="vocab-item"><span class="vocab-word">Electric</span> <span class="vocab-def">Adj: Exciting and full of energy.</span></div>
+            </div>
+
+            <div class="module">
+                <span class="module-title">Grammar: Future</span>
+                <div class="quiz-question" data-correct="b">
+                    <span class="q-text">1. We ______ a factory.</span>
+                    <div class="options">
+                        <label><input type="radio" name="c10g1" value="a"> are go to build</label>
+                        <label><input type="radio" name="c10g1" value="b"> are going to build</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="finish">
+            <div style="text-align: center; padding-top: 4rem;">
+                <h1 style="font-size: 3rem;">MISSION COMPLETE</h1>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Funding Secured.</p>
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🚀💰</div>
+                <p>Teacher Alex is proud of your business skills.</p>
+                <br><br>
+                <button class="nav-btn" onclick="location.reload()">RESTART</button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="control-panel">
+        <div class="battery-bar"><div class="battery-fill" id="progress-bar"></div></div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" onclick="changeChapter(-1)" disabled>PREV</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeChapter(1)">NEXT</button>
+        </div>
+    </footer>
+
+    <script>
+        const chapters = ['cover', 'prologue', 'ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9', 'ch10', 'finish'];
+        let currentIndex = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progress-bar');
+
+        function updateUI() {
+            // Update Buttons
+            prevBtn.disabled = currentIndex === 0;
+            if (currentIndex === 0) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'none';
+            } else if (currentIndex === chapters.length - 1) {
+                nextBtn.style.display = 'none';
+                prevBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                prevBtn.style.display = 'block';
+            }
+
+            // Show Chapter
+            document.querySelectorAll('.chapter').forEach(el => el.classList.remove('active'));
+            document.getElementById(chapters[currentIndex]).classList.add('active');
+            window.scrollTo(0,0);
+
+            // Update Battery Bar (Progress)
+            const progress = (currentIndex / (chapters.length - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function changeChapter(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= chapters.length) currentIndex = chapters.length - 1;
+            updateUI();
+        }
+
+        document.querySelectorAll('.quiz-question').forEach(question => {
+            const inputs = question.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    const selectedValue = input.value;
+                    const correctAnswer = question.getAttribute('data-correct');
+                    const parentLabel = input.parentElement;
+                    question.querySelectorAll('label').forEach(l => l.classList.remove('correct', 'wrong'));
+                    if (selectedValue === correctAnswer) parentLabel.classList.add('correct');
+                    else parentLabel.classList.add('wrong');
+                });
+            });
+        });
+
+        updateUI();
+    </script>
+</body>
+</html>
